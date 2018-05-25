@@ -41,7 +41,6 @@ $tweet = "";
     </section>
 
     <section class="TimeLine">
-    <h1></h1>
     <h1>Twitter HOME TIMELINE</h1>
     
     <?php
