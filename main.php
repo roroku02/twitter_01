@@ -56,7 +56,7 @@ $tweet = "";
         <ul>
             <li>User Name : <?php echo $User_Name ?></li>
             <li>User ID : @<?php echo $User_ID ?></li>
-            <li>Date : <?echo echo $Date ?></li>
+            <li>Date : <?echo $Date ?></li>
             <li>TweetID : <?php echo $TweetID ?></li>
             <li>Tweet : <?php echo $Text ?></li>
         </ul>
