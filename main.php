@@ -34,7 +34,10 @@ $tweet = "";
 <body>
     <section class="Tweet">
         <h1>Tweet</h1>
-        <textarea name="Tweet" id="Tweet" cols="100" rows="3"></textarea>
+        <form action="" method="post">
+            <textarea name="Tweet" id="Tweet" cols="100" rows="3" placeholder="今どうしてる？"></textarea>
+            <input type="submit" value="Tweet">
+        </form>
     </div>
 
     <section class="TimeLine">
