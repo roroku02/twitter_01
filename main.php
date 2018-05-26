@@ -1,5 +1,4 @@
 <?php
-session_cache_limiter('private_no_expire');
 session_start();
 require_once('./twitteroauth/autoload.php');
 
@@ -34,9 +33,11 @@ $tweet = "";
 <body>
     <section class="Tweet">
         <h1>Tweet</h1>
-        <form action="" method="post">
+        <div role="textbox" contenteditable="true" aria-multiline="true" style="width:400px"></div>
+        <form action="main.php?<?php echo time(); ?>" method="post">
             <textarea name="Tweet" id="Tweet" cols="100" rows="3" placeholder="今どうしてる？"></textarea>
             <input type="submit" value="Tweet">
+            <?php $connection->post('statuses/update', ['status' => $_POST["Tweet"]]);?>
         </form>
     </div>
 
