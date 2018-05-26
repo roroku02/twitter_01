@@ -32,8 +32,9 @@ $tweet = "";
 </header>
 
 <body>
-    <div class="Tweet" role="textbox">
+    <section class="Tweet">
         <h1>Tweet</h1>
+        <textarea name="Tweet" id="Tweet" cols="100" rows="3"></textarea>
     </div>
 
     <section class="TimeLine">
