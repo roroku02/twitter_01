@@ -34,7 +34,7 @@ $tweet = "";
 <body>
     <div class="Tweet" role="textbox">
         <h1>Tweet</h1>
-    </section>
+    </div>
 
     <section class="TimeLine">
     <h1>Twitter HOME TIMELINE</h1>
