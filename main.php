@@ -1,4 +1,5 @@
 <?php
+session_cache_limiter('private_no_expire');
 session_start();
 require_once('./twitteroauth/autoload.php');
 
@@ -31,13 +32,8 @@ $tweet = "";
 </header>
 
 <body>
-    <section class="Tweet">
+    <div class="Tweet" role="textbox">
         <h1>Tweet</h1>
-        <form action="" method="post">
-            <input type="text" name="tweet" value="<?php echo htmlspecialchars($tweet,ENT_QUOTES,"utf-8"); ?>">
-            <input type="submit" value="Send">
-            <?php $connection->post('statuses/update', ['status' => $_POST["tweet"]]);?>
-        </form>
     </section>
 
     <section class="TimeLine">
