@@ -32,6 +32,10 @@ body {
     width: 100%;
 }
 
+.Tweet .rich-text-area-tweet {
+    width: 400px;
+}
+
 footer {
     background-color: rgba(0, 255, 255, 0.363);
     width: 100%;

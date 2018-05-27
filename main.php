@@ -33,7 +33,7 @@ $tweet = "";
 <body>
     <section class="Tweet">
         <h1>Tweet</h1>
-        <div role="textbox" contenteditable="true" aria-multiline="true" style="width:400px"></div>
+        <div role="textbox" class="rich-text-area-tweet" contenteditable="true" aria-multiline="true"></div>
         <form action="main.php?<?php echo time(); ?>" method="post">
             <textarea name="Tweet" id="Tweet" cols="100" rows="3" placeholder="今どうしてる？"></textarea>
             <input type="submit" value="Tweet">
