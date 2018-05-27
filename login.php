@@ -15,19 +15,6 @@
     $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 
     $URL = $connetion->url('oauth/authenticate',array('oauth_token'=>$request_token['oauth_token']));
+
+    header('location:'.$URL);
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Login Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
-</head>
-<body>
-    <section class="login">
-        <h1>Welcome</h1>
-        <a href="<?php echo $URL; ?>">ログイン</a>
-    </section>
-</body>
-</html>
