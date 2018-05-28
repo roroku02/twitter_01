@@ -31,8 +31,7 @@ $tweet = "";
 <body>
     <section class="Tweet">
         <h1>Tweet</h1>
-        <div role="textbox" class="rich-text-area-tweet" contenteditable="true" aria-multiline="true"></div>
-        <form action="main.php?<?php echo time(); ?>" method="post">
+        <form action="main.php" method="post">
             <textarea name="Tweet" id="Tweet" cols="100" rows="3" placeholder="今どうしてる？"></textarea>
             <input type="submit" value="Tweet">
             <?php $connection->post('statuses/update', ['status' => $_POST["Tweet"]]);?>
@@ -44,6 +43,8 @@ $tweet = "";
     
     <?php
     $home = $connection->get('statuses/home_timeline',array('count'=>10));
+    
+    print_r($home);
     $count = sizeof($home);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $home[$Tweet_num]->{"id"};
@@ -62,6 +63,13 @@ $tweet = "";
     <?php
         }
     ?>
+    </section>
+
+    <section class="search">
+        <form action="search.php" method="get">
+            <input type="text" name="search_word">
+            <input type="submit" value="検索">
+        </form>
     </section>
 
 </body>
