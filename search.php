@@ -10,9 +10,8 @@
     
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 3));
+    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 10));
 
-    print_r($search_tweet);
 ?>
 
 <!DOCTYPE html>
@@ -24,29 +23,33 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-<br><br><br>
-debug
-<br><br><br>
+<a href="main.php">タイムラインに戻る</a>
+<br>
+debug mode
+
+    <h2>"<?php echo $_GET['search_word']; ?>"のTwitter検索結果</h2>
     <?php
-        $count = sizeof($search_tweet);
-        echo $search_tweet->{"statuses"}[0]->{"text"};
+        $count = sizeof($search_tweet->{"statuses"});
         for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
-            $TweetID = $search_tweet->statuses[$Tweet_num]->{"id"};
-            $Date = $search_tweet[$Tweet_num]->{"statuses"}->{"created_at"};
-            $Text = $search_tweet[$Tweet_num]->{"text"};
-            $User_ID = $search_tweet[$Tweet_num]->{"user"}->{"screen_name"};
-            $User_Name = $search_tweet[$Tweet_num]->{"user"}->{"name"};
+            $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
+            $Date = $search_twee->{"statuses"}[$Tweet_num]->{"created_at"};
+            $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"text"};
+            $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"screen_name"};
+            $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"name"};
+            $Retweet_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweet_count"};
+            $Favorite_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"favorite_count"};
         ?>
             <ul>
-                <li>User Name : <?php echo $User_Name ?></li>
-                <li>User ID : @<?php echo $User_ID ?></li>
-                <li>Date : <?echo $Date ?></li>
-                <li>TweetID : <?php echo $TweetID ?></li>
-                <li>Tweet : <?php echo $Text ?></li>
+                <li>User Name : <?php echo $User_Name; ?></li>
+                <li>User ID : @<?php echo $User_ID; ?></li>
+                <li>Date : <?echo $Date; ?></li>
+                <li>TweetID : <?php echo $TweetID; ?></li>
+                <li>Tweet : <?php echo $Text; ?></li>
+                <li>Retweet : <?php echo $Retweet_Count; ?></li>
+                <li>Favorite : <?php echo $Favorite_Count; ?></li>
             </ul>
-        <?php
-            }
-        ?>
-            </section>
+    <?php
+        }
+    ?>
 </body>
 </html>
