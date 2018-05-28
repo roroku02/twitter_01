@@ -16,5 +16,5 @@
 
     session_regenerate_id();
 
-    header('location: /main.php');
+    header('location: ./main.php');
 ?>

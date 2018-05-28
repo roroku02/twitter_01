@@ -6,11 +6,9 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 $ConsumerKey = "m8fmmQGoGbRpooxPGwgGg";
 $ConsumerSecret = "Llbr5TBIL0VcxZNS4jcIGXOq3qelCADnthYfjUeUQs";
-$AccessToken = "312682302-uvj5vhZYfgCYt75opEA7gnfDz7eaOvcNUUL3UgbL";
-$AccessTokenSecret = "jPwIHW2tjE3GQVgbL3JHXzosOBcTKsUpFsWdjfMFyU8EI";
-$CallBackUrl = "#";
+$AccessToken = $_SESSION['access_token'];
 
-$connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken,$AccessTokenSecret);
+$connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
 $tweet = "";
 ?>
