@@ -44,7 +44,6 @@ $tweet = "";
     <?php
     $home = $connection->get('statuses/home_timeline',array('count'=>10));
     
-    print_r($home);
     $count = sizeof($home);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $home[$Tweet_num]->{"id"};
@@ -52,6 +51,8 @@ $tweet = "";
         $Text = $home[$Tweet_num]->{"text"};
         $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
+        $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
+        $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
     ?>
         <ul>
             <li>User Name : <?php echo $User_Name ?></li>
@@ -59,6 +60,8 @@ $tweet = "";
             <li>Date : <?echo $Date ?></li>
             <li>TweetID : <?php echo $TweetID ?></li>
             <li>Tweet : <?php echo $Text ?></li>
+            <li>Retweet : <?php echo $Retweet_Count; ?></li>
+            <li>Favorite : <?php echo $Favorite_Count; ?></li>
         </ul>
     <?php
         }
@@ -66,8 +69,9 @@ $tweet = "";
     </section>
 
     <section class="search">
+        <h1>Search</h1>
         <form action="search.php" method="get">
-            <input type="text" name="search_word">
+            <input type="text" name="search_word" placeholder="キーワード検索">
             <input type="submit" value="検索">
         </form>
     </section>
