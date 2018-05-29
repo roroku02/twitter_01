@@ -31,10 +31,9 @@ $tweet = "";
 <body>
     <section class="Tweet">
         <h1>Tweet</h1>
-        <form action="main.php" method="post">
+        <form action="tweet.php" method="post">
             <textarea name="Tweet" id="Tweet" cols="100" rows="3" placeholder="今どうしてる？"></textarea>
             <input type="submit" value="Tweet">
-            <?php $connection->post('statuses/update', ['status' => $_POST["Tweet"]]);?>
         </form>
     </div>
 
@@ -44,6 +43,7 @@ $tweet = "";
     <?php
     $home = $connection->get('statuses/home_timeline',array('count'=>10));
     
+    print_r($home);
     $count = sizeof($home);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $home[$Tweet_num]->{"id"};
@@ -51,10 +51,12 @@ $tweet = "";
         $Text = $home[$Tweet_num]->{"text"};
         $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
+        $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
         $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
     ?>
         <ul>
+            <li>Profile_image : <img src =<?php echo $Profile_image_URL; ?>></li>
             <li>User Name : <?php echo $User_Name ?></li>
             <li>User ID : @<?php echo $User_ID ?></li>
             <li>Date : <?echo $Date ?></li>
