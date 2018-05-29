@@ -43,7 +43,10 @@ $tweet = "";
     <?php
     $home = $connection->get('statuses/home_timeline',array('count'=>10));
     
+    /*******debug mode*********
     print_r($home);
+    ***************************/
+    
     $count = sizeof($home);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $home[$Tweet_num]->{"id"};
