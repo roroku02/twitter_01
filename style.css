@@ -26,14 +26,18 @@ header h1{
 
 body {
     margin-top: 50px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 100px;
+    margin-right: 100px;
     margin-bottom: 50px;
-    width: 100%;
 }
 
 .Tweet .rich-text-area-tweet {
     width: 400px;
+}
+
+.TimeLine ul{
+    border: 1px solid #000;
+    border-radius: 3px;
 }
 
 footer {
