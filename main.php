@@ -46,7 +46,7 @@ $tweet = "";
     /*******debug mode*********
     print_r($home);
     ***************************/
-    
+
     $count = sizeof($home);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $home[$Tweet_num]->{"id"};
@@ -86,7 +86,7 @@ $tweet = "";
 
 <footer>
     <div id="title">
-        <h1>fotter area.</h1>
+        <h1>footer area.</h1>
     </div>
 </footer>
 
