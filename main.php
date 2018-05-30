@@ -43,9 +43,9 @@ $tweet = "";
     <?php
     $home = $connection->get('statuses/home_timeline',array('count'=>10));
     
-    /*******debug mode*********
-    print_r($home);
-    ***************************/
+    //*******debug mode*********
+    echo "debug mode<br><br>"; print_r($home);
+    //***************************
 
     $count = sizeof($home);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){

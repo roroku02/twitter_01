@@ -35,7 +35,7 @@ body {
     width: 400px;
 }
 
-.TimeLine ul{
+.TimeLine ul, .search ul{
     border: 1px solid #000;
     border-radius: 3px;
 }
