@@ -57,6 +57,14 @@ $tweet = "";
         $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
         $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
+        $hashtags = [];
+        $hashtag_Count = 0;
+        $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
+        if($hashtag_Count != 0){
+        for($hashtag_num = 0;$hastag_num < $hashtag_Count;$hashtag_num++){
+            $hashtags[$hashtag_num] = $home[$Tweet_num]->{"entities"}->{"hashtags"}[$hashtag_num]->{"text"};
+        }
+    }
     ?>
         <ul>
             <li>Profile_image : <img src =<?php echo $Profile_image_URL; ?>></li>
@@ -67,6 +75,7 @@ $tweet = "";
             <li>Tweet : <?php echo $Text ?></li>
             <li>Retweet : <?php echo $Retweet_Count; ?></li>
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
+            <li>hashtags : <?php echo $hashtag_Count; ?></li>
         </ul>
     <?php
         }
