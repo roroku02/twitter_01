@@ -41,7 +41,7 @@ $tweet = "";
     <h1>Twitter HOME TIMELINE</h1>
     
     <?php
-    $home = $connection->get('statuses/home_timeline',array('count'=>10));
+    $home = $connection->get('statuses/home_timeline',array('count'=>20));
     
     //*******debug mode*********
     echo "debug mode<br><br>"; print_r($home);
@@ -58,13 +58,9 @@ $tweet = "";
         $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
         $hashtags = [];
-        $hashtag_Count = 0;
         $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
-        if($hashtag_Count != 0){
-        for($hashtag_num = 0;$hastag_num < $hashtag_Count;$hashtag_num++){
-            $hashtags[$hashtag_num] = $home[$Tweet_num]->{"entities"}->{"hashtags"}[$hashtag_num]->{"text"};
-        }
-    }
+        $hashtags[$hashtag_num] = $home[$Tweet_num]->{"entities"}->{"hashtags"}[$hashtag_num]->{"text"};
+ 
     ?>
         <ul>
             <li>Profile_image : <img src =<?php echo $Profile_image_URL; ?>></li>
