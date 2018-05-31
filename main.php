@@ -57,11 +57,13 @@ $tweet = "";
         $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
         $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
-        $hashtags = [];
+        $indices = [];
         $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
-        for($hashtag_num=0;$hashtag_num < $hashtag_Count; $hashtag_num++){
-            $hashtags[$hashtag_num] = $home[$Tweet_num]->{"entities"}->{"hashtags"}[$hashtag_num]->{"text"};
-        }
+        $hashtags = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"text"};
+        $indices = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"};
+        $left_text = mb_substr($Text,0,$indices[0]);
+        $right_text = mb_substr($Text,($indices[0]+($indices[1]-$indices[0])));
+        $after_text = '<a href = "http://loaclhost/twitter_01/search/php?search_word=%23' . rawurlencode("#" . $hashtags) . '">#' . $hashtags . '</a>';
     ?>
         <ul>
             <li>Profile_image : <img src =<?php echo $Profile_image_URL; ?>></li>
