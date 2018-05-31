@@ -41,7 +41,7 @@
         $count = sizeof($search_tweet->{"statuses"});
         for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
             $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
-            $Date = $search_twee->{"statuses"}[$Tweet_num]->{"created_at"};
+            $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"created_at"};
             $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"text"};
             $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"screen_name"};
             $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"name"};
