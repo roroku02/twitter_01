@@ -33,7 +33,7 @@ $tweet = "";
         <h1>Tweet</h1>
         <form action="tweet.php" method="post">
             <textarea name="Tweet" id="Tweet" cols="100" rows="3" placeholder="今どうしてる？"></textarea>
-            <input type="submit" value="Tweet">
+            <input type="submit" value="Tweet" class="Tweet_button">
         </form>
     </div>
 
@@ -60,14 +60,19 @@ $tweet = "";
         $indices = [];
         $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
         $hashtag_TRUE = FALSE;
+        $media_TRUE = FALSE;
         if(isset ($home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"}[0])){
             $hashtag_TRUE = TRUE;
             $hashtags = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"text"};
             $indices = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"};
             $left_text = mb_substr($Text,0,$indices[0]);
             $right_text = mb_substr($Text,($indices[0]+($indices[1]-$indices[0])));
-            $after_text = '<a href = "http://loaclhost/twitter_01/search/php?search_word=' . rawurlencode("#" . $hashtags) . '">#' . $hashtags . '</a>';
+            $after_text = '<a href = "http://localhost/twitter_01/search.php?search_word=' . rawurlencode("#" . $hashtags) . '">#' . $hashtags . '</a>';
             $rich_text = $left_text . $after_text . $right_text;
+        }
+        if(isset ($home[$Tweet_num]->{"entities"}->{"media"})){
+            $media_TRUE = TRUE;
+            $media = $home[$Tweet_num]->{"entities"}->{"media"}[0]->{"media_url_https"};
         }
     ?>
         <ul>
@@ -83,6 +88,9 @@ $tweet = "";
             <?php } ?>
             <li>Retweet : <?php echo $Retweet_Count; ?></li>
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
+            <?php if($media_TRUE == TRUE){ ?>
+                <li>media : <img src ="<?php echo $media; ?>"></li>
+            <?php } ?>
         </ul>
     <?php
         }

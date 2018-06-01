@@ -35,6 +35,19 @@ body {
     width: 400px;
 }
 
+.Tweet_button {
+    width: 120px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px darkcyan dashed;
+    background-color: #00aced;
+    font-size: 20px;
+}
+
+.Tweet_button:hover {
+    background-color: #84d3f0;
+}
+
 .TimeLine ul, .search ul{
     border: 1px solid #000;
     border-radius: 3px;
