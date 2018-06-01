@@ -53,6 +53,15 @@ body {
     border-radius: 3px;
 }
 
+.TimeLine .img {
+    display: block;
+    width: 200px;
+    min-height: 200px;
+    margin-left: 5px;
+    background-size: cover;
+    background-position: center;
+}
+
 footer {
     background-color: rgba(0, 255, 255, 0.363);
     width: 100%;

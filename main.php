@@ -89,7 +89,7 @@ $tweet = "";
             <li>Retweet : <?php echo $Retweet_Count; ?></li>
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
             <?php if($media_TRUE == TRUE){ ?>
-                <li>media : <img src ="<?php echo $media; ?>"></li>
+                <li>media : <a href="<?php echo $media; ?>" class="img" style="background-image: url(<?php echo $media; ?>);"></a></li>
             <?php } ?>
         </ul>
     <?php
