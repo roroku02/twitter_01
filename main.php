@@ -59,8 +59,10 @@ $tweet = "";
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
         $indices = [];
         $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
-        $hashtags = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"text"};
-        if($home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"} != NULL){
+        $hashtag_TRUE = FALSE;
+        if(isset ($home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"}[0])){
+            $hashtag_TRUE = TRUE;
+            $hashtags = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"text"};
             $indices = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"};
             $left_text = mb_substr($Text,0,$indices[0]);
             $right_text = mb_substr($Text,($indices[0]+($indices[1]-$indices[0])));
@@ -74,11 +76,13 @@ $tweet = "";
             <li>User ID : @<?php echo $User_ID ?></li>
             <li>Date : <?echo $Date ?></li>
             <li>TweetID : <?php echo $TweetID ?></li>
-            <li>Tweet : <?php echo $Text ?></li>
+            <?php if($hashtag_TRUE == TRUE){ ?>
+                <li>Tweet : <?php echo $rich_text; ?></li>
+            <?php } else { ?>
+                <li>Tweet : <?php echo $Text ?></li>
+            <?php } ?>
             <li>Retweet : <?php echo $Retweet_Count; ?></li>
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
-            <li>hashtags : <a href="http://localhost/twitter_01/search.php?search_word=%23<?php echo $hashtags[0]; ?>">#<?php echo $hashtags[0]; ?></a></li>
-            <li>after_text : <?php echo $rich_text; ?></li>
         </ul>
     <?php
         }
