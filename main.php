@@ -60,10 +60,13 @@ $tweet = "";
         $indices = [];
         $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
         $hashtags = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"text"};
-        $indices = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"};
-        $left_text = mb_substr($Text,0,$indices[0]);
-        $right_text = mb_substr($Text,($indices[0]+($indices[1]-$indices[0])));
-        $after_text = '<a href = "http://loaclhost/twitter_01/search/php?search_word=%23' . rawurlencode("#" . $hashtags) . '">#' . $hashtags . '</a>';
+        if($home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"} != NULL){
+            $indices = $home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"};
+            $left_text = mb_substr($Text,0,$indices[0]);
+            $right_text = mb_substr($Text,($indices[0]+($indices[1]-$indices[0])));
+            $after_text = '<a href = "http://loaclhost/twitter_01/search/php?search_word=' . rawurlencode("#" . $hashtags) . '">#' . $hashtags . '</a>';
+            $rich_text = $left_text . $after_text . $right_text;
+        }
     ?>
         <ul>
             <li>Profile_image : <img src =<?php echo $Profile_image_URL; ?>></li>
@@ -75,6 +78,7 @@ $tweet = "";
             <li>Retweet : <?php echo $Retweet_Count; ?></li>
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
             <li>hashtags : <a href="http://localhost/twitter_01/search.php?search_word=%23<?php echo $hashtags[0]; ?>">#<?php echo $hashtags[0]; ?></a></li>
+            <li>after_text : <?php echo $rich_text; ?></li>
         </ul>
     <?php
         }
