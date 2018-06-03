@@ -26,13 +26,13 @@ header h1{
 
 body {
     margin-top: 50px;
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 50px;
 }
 
-.Tweet .rich-text-area-tweet {
-    width: 400px;
+.Tweet {
+    margin-left: 50px;
 }
 
 .Tweet_button {
@@ -51,15 +51,25 @@ body {
 .TimeLine ul, .search ul{
     border: 1px solid #000;
     border-radius: 3px;
+    width: auto;
+    margin: 10px;
+
 }
 
 .TimeLine .img {
     display: block;
-    width: 200px;
-    min-height: 200px;
-    margin-left: 5px;
+    width: 150px;
+    min-height: 150px;
     background-size: cover;
     background-position: center;
+}
+@media (min-width: 768px) {
+    .TimeLine ul, .search ul {
+        max-width: 1200px;
+        margin: 10px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 footer {

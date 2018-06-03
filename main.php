@@ -32,10 +32,10 @@ $tweet = "";
     <section class="Tweet">
         <h1>Tweet</h1>
         <form action="tweet.php" method="post">
-            <textarea name="Tweet" id="Tweet" cols="100" rows="3" placeholder="今どうしてる？"></textarea>
+            <textarea name="Tweet" id="Tweet" cols="50" rows="3" placeholder="今どうしてる？"></textarea>
             <input type="submit" value="Tweet" class="Tweet_button">
         </form>
-    </div>
+    </section>
 
     <section class="TimeLine">
     <h1>Twitter HOME TIMELINE</h1>
