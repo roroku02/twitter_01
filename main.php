@@ -41,10 +41,10 @@ $tweet = "";
     <h1>Twitter HOME TIMELINE</h1>
     
     <?php
-    $home = $connection->get('statuses/home_timeline',array('count'=>20));
+    $home = $connection->get('statuses/home_timeline',array('count'=>50));
     
     //*******debug mode*********
-    echo "debug mode<br><br>"; print_r($home);
+    //echo "debug mode<br><br>"; print_r($home);
     //***************************
 
     $count = sizeof($home);
@@ -72,7 +72,11 @@ $tweet = "";
         }
         if(isset ($home[$Tweet_num]->{"entities"}->{"media"})){
             $media_TRUE = TRUE;
-            $media = $home[$Tweet_num]->{"entities"}->{"media"}[0]->{"media_url_https"};
+            $media_Count = sizeof($home[$Tweet_num]->{"extended_entities"}->{"media"});
+            $media = [];
+            for($media_num = 0;$media_num < $media_Count;$media_num++) {
+                $media[$media_num] = $home[$Tweet_num]->{"extended_entities"}->{"media"}[$media_num]->{"media_url_https"};
+            }
         }
     ?>
         <ul>
@@ -89,7 +93,8 @@ $tweet = "";
             <li>Retweet : <?php echo $Retweet_Count; ?></li>
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
             <?php if($media_TRUE == TRUE){ ?>
-                <li>media : <a href="<?php echo $media; ?>" class="img" style="background-image: url(<?php echo $media; ?>);"></a></li>
+                <li>media : <?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>
+                <a href="<?php echo $media[$media_num]; ?>" class="img" style="background-image: url(<?php echo $media[$media_num]; ?>);"></a><?php } ?></li>
             <?php } ?>
         </ul>
     <?php

@@ -57,12 +57,14 @@ body {
 }
 
 .TimeLine .img {
-    display: block;
+    display: inline-block;
     width: 150px;
     min-height: 150px;
     background-size: cover;
     background-position: center;
 }
+
+
 @media (min-width: 768px) {
     .TimeLine ul, .search ul {
         max-width: 1200px;
