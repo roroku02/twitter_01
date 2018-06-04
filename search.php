@@ -43,6 +43,7 @@
             $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
             $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"created_at"};
             $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"text"};
+            $Text = preg_replace("/\s#(w*[一-龠_ぁ-ん_ァ-ヴーａ-ｚＡ-Ｚa-zA-Z0-9]+|[a-zA-Z0-9_]+|[a-zA-Z0-9_]w*)/u", " <a href=\"http://localhost/twitter_01/search.php?search_word=%23\\1\" target=\"twitter\">#\\1</a>", $Text);
             $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"screen_name"};
             $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"name"};
             $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"profile_image_url_https"};

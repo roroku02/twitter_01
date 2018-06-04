@@ -52,6 +52,7 @@ $tweet = "";
         $TweetID = $home[$Tweet_num]->{"id"};
         $Date = $home[$Tweet_num]->{"created_at"};
         $Text = $home[$Tweet_num]->{"text"};
+        $Text = preg_replace("/\s#(w*[一-龠_ぁ-ん_ァ-ヴーａ-ｚＡ-Ｚa-zA-Z0-9]+|[a-zA-Z0-9_]+|[a-zA-Z0-9_]w*)/u", " <a href=\"http://localhost/twitter_01/search.php?search_word=%23\\1\" target=\"twitter\">#\\1</a>", $Text);
         $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
         $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
@@ -60,19 +61,6 @@ $tweet = "";
         $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
         $hashtag_TRUE = FALSE;
         $media_TRUE = FALSE;
-        if(isset ($home[$Tweet_num]->{"entities"}->{"hashtags"}[0]->{"indices"}[0])){
-            $hashtag_TRUE = TRUE;
-            $hashtags =[];
-            for($hashtag_num = 0;$hashtag_num < $hashtag_Count;$hashtag_num++) {
-                $hashtags[$hashtag_num] = $home[$Tweet_num]->{"entities"}->{"hashtags"}[$hashtag_num]->{"text"};
-                $indices = [];
-                $indices = $home[$Tweet_num]->{"entities"}->{"hashtags"}[$hashtag_num]->{"indices"};
-                $left_text = mb_substr($Text,0,$indices[0]);
-                $right_text = mb_substr($Text,($indices[0]+($indices[1]-$indices[0])));
-                $after_text = '<a href = "http://localhost/twitter_01/search.php?search_word=' . rawurlencode("#" . $hashtags[$hashtag_num]) . '">#' . $hashtags[$hashtag_num] . '</a>';
-                $rich_text = $left_text . $after_text . $right_text;
-            }
-        }
         if(isset ($home[$Tweet_num]->{"entities"}->{"media"})){
             $media_TRUE = TRUE;
             $media_Count = sizeof($home[$Tweet_num]->{"extended_entities"}->{"media"});
@@ -88,11 +76,7 @@ $tweet = "";
             <li>User ID : @<?php echo $User_ID ?></li>
             <li>Date : <?echo $Date ?></li>
             <li>TweetID : <?php echo $TweetID ?></li>
-            <?php if($hashtag_TRUE == TRUE){ ?>
-                <li>Tweet : <?php echo $rich_text; ?></li>
-            <?php } else { ?>
-                <li>Tweet : <?php echo $Text ?></li>
-            <?php } ?>
+            <li>Tweet : <?php echo $Text ?></li>
             <li>Retweet : <?php echo $Retweet_Count; ?></li>
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
             <?php if($media_TRUE == TRUE){ ?>
