@@ -44,7 +44,7 @@ $tweet = "";
     $home = $connection->get('statuses/home_timeline',array('count'=>50));
     
     //*******debug mode*********
-    echo "debug mode<br><br>"; print_r($home);
+    //echo "debug mode<br><br>"; print_r($home);
     //***************************
 
     $count = sizeof($home);
@@ -52,28 +52,30 @@ $tweet = "";
         $TweetID = $home[$Tweet_num]->{"id"};
         $Date = $home[$Tweet_num]->{"created_at"};
         $Text = $home[$Tweet_num]->{"text"};
-        /*$Text = preg_replace("/\s#(w*[一-龠_ぁ-ん_ァ-ヴーａ-ｚＡ-Ｚa-zA-Z0-9]+|[a-zA-Z0-9_]+|[a-zA-Z0-9_]w*)/u", " <a href=\"http://localhost/twitter_01/search.php?search_word=%23\\1\" target=\"twitter\">#\\1</a>", $Text);
-        if(isset($home[$Tweet_num]->{"entities"}->{"urls"})){
-            foreach($home[$Tweet_num]->{"entities"}->{"urls"} as $urls){
-                $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" target="_brank">'.$urls->display_url.'</a>',$Text);
-            }
-        }*/
+        //$Text = preg_replace("/\s#(w*[一-龠_ぁ-ん_ァ-ヴーａ-ｚＡ-Ｚa-zA-Z0-9]+|[a-zA-Z0-9_]+|[a-zA-Z0-9_]w*)/u", " <a href=\"http://localhost/twitter_01/search.php?search_word=%23\\1\" target=\"twitter\">#\\1</a>", $Text);
         $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
         $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
         $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
-        $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
         $hashtag_TRUE = FALSE;
-        if(isset($home[$Tweet_num]->{"entities"})->{"hashtags"}){
+        $hashtag_Count = 0;
+        $hashtag_Count = sizeof($home[$Tweet_num]->{"entities"}->{"hashtags"});
+        //if(isset($home[$Tweet_num]->{"entities"}->{"hashtags"})){
+        if($hashtag_Count != 0){
             $hashtag_TRUE = TRUE;
-            foreach($home[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
-                $hashtag_text = $hashtags->{"text"};
-                $hashtag_indices[] = $hashtags->{"indices"};
+            for($hashtag_num = $hashtag_Count;$hashtag_num >= 0;$hashtag_num--){
+                $hashtag_text = $home[$Tweet_num]->{"entities"}->{"hashtags"}[$hashtag_num]->{"text"};
+                $hashtag_indices = $home[$Tweet_num]->{"entities"}->{"hashtags"}[$hashtag_num]->{"indices"};
                 $left_text = mb_substr($Text,0,$hashtag_indices[0]);
                 $right_text = mb_substr($Text,($hashtag_indices[0]+($hashtag_indices[1] - $hashtag_indices[0])));
                 $after_text = '<a href="http://localhost/twitter_01/search.php?search_word=' . rawurlencode("#" . $hashtag_text) . '">#' . $hashtag_text . '</a>';
-                $rich_text = $left_text . $after_text . $right_text;
+                $Text = $left_text . $after_text . $right_text;
+            }
+        }
+        if(isset($home[$Tweet_num]->{"entities"}->{"urls"})){
+            foreach($home[$Tweet_num]->{"entities"}->{"urls"} as $urls){
+                $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" target="_brank">'.$urls->display_url.'</a>',$Text);
             }
         }
         $media_TRUE = FALSE;
