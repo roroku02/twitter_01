@@ -57,7 +57,7 @@ body {
 
 }
 
-.TimeLine .img {
+.TimeLine .img, .search .img{
     display: inline-block;
     width: 150px;
     min-height: 150px;

@@ -46,7 +46,7 @@
     <h2>"<?php echo $_GET['search_word']; ?>"のTwitter検索結果</h2>
     <?php
     //*******debug mode*********
-    echo "debug mode<br><br>"; print_r($search_tweet);
+    //echo "debug mode<br><br>"; print_r($search_tweet);
     //**************************
     
         $count = sizeof($search_tweet->{"statuses"});
@@ -65,10 +65,9 @@
                     $Text = $left_text . $after_text . $right_text;
                 }
             }
-            //print_r ($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"media"});
             $media_URL = NULL;
-            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"media"})){
-                foreach($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"media"} as $media){
+            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"extended_entities"}->{"media"})){
+                foreach($search_tweet->{"statuses"}[$Tweet_num]->{"extended_entities"}->{"media"} as $media){
                     $media_URL[] = $media->media_url_https;
                 }
             }
@@ -90,9 +89,9 @@
                 <li>Date : <?echo $Date; ?></li>
                 <li>TweetID : <?php echo $TweetID; ?></li>
                 <li>Tweet : <?php echo $Text; ?></li>
-                <li>Media : 
-                <?php if(isset($media_URL)){
-                    $media_Count = sizeof($media_URL);
+                <?php if(isset($media_URL)){ ?>
+                    <li>Media : 
+                    <?php $media_Count = sizeof($media_URL);
                     for($media_num = 0; $media_num < $media_Count; $media_num++){?>
                         <a href="<?php echo $media_URL[$media_num] ?>" class="img" data-lightbox="group<?php echo $Tweet_num ?>" style="background-image: url(<?php echo $media_URL[$media_num] ?>)"></a>
                     <?php }
