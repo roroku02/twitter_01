@@ -21,6 +21,17 @@
     <title><?php echo $_GET['search_word'];?>の検索結果</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src = "js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/lightbox.css" />
+    <script type="text/javascript" src="js/lightbox.js"></script>
+</head>
+<script>
+    lightbox.option ({
+        'alwaysShowNavOnTouchDevices': true,
+        'fadeDuration': 200,
+        'resizeDuration': 400
+    })
+</script>
 </head>
 <header>
     <div id="title">
@@ -35,7 +46,7 @@
     <h2>"<?php echo $_GET['search_word']; ?>"のTwitter検索結果</h2>
     <?php
     //*******debug mode*********
-    //echo "debug mode<br><br>"; print_r($search_tweet);
+    echo "debug mode<br><br>"; print_r($search_tweet);
     //**************************
     
         $count = sizeof($search_tweet->{"statuses"});
@@ -43,7 +54,24 @@
             $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
             $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"created_at"};
             $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"text"};
-            $Text = preg_replace("/\s#(w*[一-龠_ぁ-ん_ァ-ヴーａ-ｚＡ-Ｚa-zA-Z0-9]+|[a-zA-Z0-9_]+|[a-zA-Z0-9_]w*)/u", " <a href=\"http://localhost/twitter_01/search.php?search_word=%23\\1\" target=\"twitter\">#\\1</a>", $Text);
+            $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"});
+            foreach($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
+                if(isset($hashtags)){
+                    $hashtag_text = $hashtags->text;
+                    $hashtag_indices = $hashtags->indices;
+                    $left_text = mb_substr($Text,0,$hashtag_indices[0]);
+                    $right_text = mb_substr($Text,($hashtag_indices[0] + ($hashtag_indices[1] - $hashtag_indices[0])));
+                    $after_text = '<a href="http://localhost/twitter_01/search.php?search_word=' . rawurlencode("#" . $hashtag_text) . '">#' . $hashtag_text . '</a>';
+                    $Text = $left_text . $after_text . $right_text;
+                }
+            }
+            //print_r ($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"media"});
+            $media_URL = NULL;
+            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"media"})){
+                foreach($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"media"} as $media){
+                    $media_URL[] = $media->media_url_https;
+                }
+            }
             if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"urls"})){
                 foreach($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"urls"} as $urls){
                     $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" target="_brank">'.$urls->display_url.'</a>',$Text);
@@ -62,6 +90,14 @@
                 <li>Date : <?echo $Date; ?></li>
                 <li>TweetID : <?php echo $TweetID; ?></li>
                 <li>Tweet : <?php echo $Text; ?></li>
+                <li>Media : 
+                <?php if(isset($media_URL)){
+                    $media_Count = sizeof($media_URL);
+                    for($media_num = 0; $media_num < $media_Count; $media_num++){?>
+                        <a href="<?php echo $media_URL[$media_num] ?>" class="img" data-lightbox="group<?php echo $Tweet_num ?>" style="background-image: url(<?php echo $media_URL[$media_num] ?>)"></a>
+                    <?php }
+                }?>
+                </li>
                 <li>Retweet : <?php echo $Retweet_Count; ?></li>
                 <li>Favorite : <?php echo $Favorite_Count; ?></li>
             </ul>

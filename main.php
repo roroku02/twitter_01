@@ -21,7 +21,17 @@ $tweet = "";
     <title>jisaku Twitter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="css/lightbox.css" />
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/lightbox.js"></script>
 </head>
+<script>
+    lightbox.option ({
+        'alwaysShowNavOnTouchDevices': true,
+        'fadeDuration': 200,
+        'resizeDuration': 400
+    })
+</script>
 <header>
     <div id="title">
         <h1>Title Area</h1>
@@ -52,7 +62,6 @@ $tweet = "";
         $TweetID = $home[$Tweet_num]->{"id"};
         $Date = $home[$Tweet_num]->{"created_at"};
         $Text = $home[$Tweet_num]->{"text"};
-        $Text = preg_replace("/\s#(w*[一-龠_ぁ-ん_ァ-ヴーａ-ｚＡ-Ｚa-zA-Z0-9]+|[a-zA-Z0-9_]+|[a-zA-Z0-9_]w*)/u", " <a href=\"http://localhost/twitter_01/search.php?search_word=%23\\1\" target=\"twitter\">#\\1</a>", $Text);
         $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
         $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
@@ -95,7 +104,7 @@ $tweet = "";
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
             <?php if($media_TRUE == TRUE){ ?>
                 <li>media : <?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>
-                <a href="<?php echo $media[$media_num]; ?>" class="img" style="background-image: url(<?php echo $media[$media_num]; ?>);"></a><?php } ?></li>
+                <a href="<?php echo $media[$media_num]; ?>" class="img" data-lightbox="group<?php echo $Tweet_num; ?>" style="background-image: url(<?php echo $media[$media_num]; ?>);"></a><?php } ?></li>
             <?php } ?>
         </ul>
     <?php
