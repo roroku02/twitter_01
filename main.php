@@ -44,7 +44,7 @@ $tweet = "";
     $home = $connection->get('statuses/home_timeline',array('count'=>50));
     
     //*******debug mode*********
-    echo "debug mode<br><br>"; print_r($home);
+    //echo "debug mode<br><br>"; print_r($home);
     //***************************
 
     $count = sizeof($home);
@@ -52,24 +52,21 @@ $tweet = "";
         $TweetID = $home[$Tweet_num]->{"id"};
         $Date = $home[$Tweet_num]->{"created_at"};
         $Text = $home[$Tweet_num]->{"text"};
-        //$Text = preg_replace("/\s#(w*[一-龠_ぁ-ん_ァ-ヴーａ-ｚＡ-Ｚa-zA-Z0-9]+|[a-zA-Z0-9_]+|[a-zA-Z0-9_]w*)/u", " <a href=\"http://localhost/twitter_01/search.php?search_word=%23\\1\" target=\"twitter\">#\\1</a>", $Text);
+        $Text = preg_replace("/\s#(w*[一-龠_ぁ-ん_ァ-ヴーａ-ｚＡ-Ｚa-zA-Z0-9]+|[a-zA-Z0-9_]+|[a-zA-Z0-9_]w*)/u", " <a href=\"http://localhost/twitter_01/search.php?search_word=%23\\1\" target=\"twitter\">#\\1</a>", $Text);
         $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
         $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
         $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
+        $home[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($home[$Tweet_num]->{"entities"}->{"hashtags"});
         foreach($home[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
             if(isset($hashtags)){
-                arsort($hashtags);
                 $hashtag_text = $hashtags->text;
-                echo '+' .$hashtag_text;
                 $hashtag_indices = $hashtags->indices;
                 $left_text = mb_substr($Text,0,$hashtag_indices[0]);
                 $right_text = mb_substr($Text,($hashtag_indices[0] + ($hashtag_indices[1] - $hashtag_indices[0])));
                 $after_text = '<a href="http://localhost/twitter_01/search.php?search_word=' . rawurlencode("#" . $hashtag_text) . '">#' . $hashtag_text . '</a>';
-                echo $after_text;
-                //$Text = $left_text . $after_text . $right_text;
-                $Text = substr_replace($Text,$after_text,$hashtag_indices[0],$hashtag_indices[1]-$hashtag_indices[0]);
+                $Text = $left_text . $after_text . $right_text;
             }
         }
         if(isset($home[$Tweet_num]->{"entities"}->{"urls"})){
