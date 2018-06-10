@@ -67,6 +67,17 @@ $tweet = "";
         $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
         $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
+        $Retweet_TRUE = FALSE;
+        if(isset($home[$Tweet_num]->{"retweeted_status"})){
+            $Retweet_TRUE = TRUE;
+            $Date = $home[$Tweet_num]->{"retweeted_status"}->{"created_at"};
+            $Text = $home[$Tweet_num]->{"retweeted_status"}->{"text"};
+            $User_ID = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
+            $User_Name = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
+            $Profile_image_URL = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
+            if(isset($home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
+                $home[$Tweet_num]->{"entities"}->{"hashtags"} = $home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
+        }
         $home[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($home[$Tweet_num]->{"entities"}->{"hashtags"});
         foreach($home[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
             if(isset($hashtags)){
@@ -93,7 +104,9 @@ $tweet = "";
             }
         }
     ?>
-        <ul>
+        <ul <?php if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue; background-color: rgb(132, 255, 246);"'?>>
+            <?php if($Retweet_TRUE == TRUE){ ?>
+            <li>RT</li> <?php } ?>
             <li>Profile_image : <img src =<?php echo $Profile_image_URL; ?>></li>
             <li>User Name : <?php echo $User_Name ?></li>
             <li>User ID : @<?php echo $User_ID ?></li>

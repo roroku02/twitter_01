@@ -32,10 +32,6 @@ body {
     max-width: 1200px;
 }
 
-.Tweet {
-    margin-left: 50px;
-}
-
 .Tweet_button {
     width: 120px;
     height: 30px;
@@ -65,6 +61,16 @@ body {
     background-position: center;
 }
 
+@media ( max-width: 1200px ){
+    body {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .Tweet #Tweet{
+        width: 300px;
+    }
+}
 
 @media (min-width: 768px) {
     .TimeLine ul, .search ul {
