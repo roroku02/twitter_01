@@ -22,6 +22,7 @@ $tweet = "";
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="stylesheet" type="text/css" href="css/lightbox.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/lightbox.js"></script>
 </head>
@@ -68,6 +69,8 @@ $tweet = "";
         $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
         $Retweet_TRUE = FALSE;
+
+        //RT処理
         if(isset($home[$Tweet_num]->{"retweeted_status"})){
             $Retweet_TRUE = TRUE;
             $Date = $home[$Tweet_num]->{"retweeted_status"}->{"created_at"};
@@ -78,6 +81,8 @@ $tweet = "";
             if(isset($home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
                 $home[$Tweet_num]->{"entities"}->{"hashtags"} = $home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
         }
+
+        //ハッシュタグ処理
         $home[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($home[$Tweet_num]->{"entities"}->{"hashtags"});
         foreach($home[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
             if(isset($hashtags)){
@@ -89,11 +94,15 @@ $tweet = "";
                 $Text = $left_text . $after_text . $right_text;
             }
         }
+
+        //URL処理
         if(isset($home[$Tweet_num]->{"entities"}->{"urls"})){
             foreach($home[$Tweet_num]->{"entities"}->{"urls"} as $urls){
                 $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" target="_brank">'.$urls->display_url.'</a>',$Text);
             }
         }
+
+        //画像処理
         $media_TRUE = FALSE;
         if(isset ($home[$Tweet_num]->{"entities"}->{"media"})){
             $media_TRUE = TRUE;
@@ -104,15 +113,17 @@ $tweet = "";
             }
         }
     ?>
-        <ul <?php if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue; background-color: rgb(132, 255, 246);"'?>>
+
+        <!-- 出力 -->
+        <ul <?php /*RTカラー変更*/ if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue; background-color: rgb(132, 255, 246);"'?>>
             <?php if($Retweet_TRUE == TRUE){ ?>
-            <li>RT</li> <?php } ?>
+            <i class="fas fa-retweet" style = "font-size: 2em; color: green;"></i> <?php } ?>
             <li>Profile_image : <img src =<?php echo $Profile_image_URL; ?>></li>
             <li>User Name : <?php echo $User_Name ?></li>
             <li>User ID : @<?php echo $User_ID ?></li>
             <li>Date : <?echo $Date ?></li>
             <li>TweetID : <?php echo $TweetID ?></li>
-            <li>Tweet : <?php echo $Text ?></li>
+            <li>Tweet : <?php echo nl2br($Text); ?></li>
             <li>Retweet : <?php echo $Retweet_Count; ?></li>
             <li>Favorite : <?php echo $Favorite_Count; ?></li>
             <?php if($media_TRUE == TRUE){ ?>

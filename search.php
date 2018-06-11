@@ -21,6 +21,7 @@
     <title><?php echo $_GET['search_word'];?>の検索結果</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <script type="text/javascript" src = "js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/lightbox.css" />
     <script type="text/javascript" src="js/lightbox.js"></script>
