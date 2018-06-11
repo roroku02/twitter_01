@@ -74,6 +74,8 @@ $tweet = "";
         if(isset($home[$Tweet_num]->{"retweeted_status"})){
             $Retweet_TRUE = TRUE;
             $Date = $home[$Tweet_num]->{"retweeted_status"}->{"created_at"};
+            
+            $RT_User = $User_Name;
             $Text = $home[$Tweet_num]->{"retweeted_status"}->{"text"};
             $User_ID = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
             $User_Name = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
@@ -117,19 +119,22 @@ $tweet = "";
         <!-- 出力 -->
         <ul <?php /*RTカラー変更*/ if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue; background-color: rgb(132, 255, 246);"'?>>
             <?php if($Retweet_TRUE == TRUE){ ?>
-            <i class="fas fa-retweet" style = "font-size: 2em; color: green;"></i> <?php } ?>
-            <li>Profile_image : <img src =<?php echo $Profile_image_URL; ?>></li>
-            <li>User Name : <?php echo $User_Name ?></li>
-            <li>User ID : @<?php echo $User_ID ?></li>
-            <li>Date : <?echo $Date ?></li>
-            <li>TweetID : <?php echo $TweetID ?></li>
-            <li>Tweet : <?php echo nl2br($Text); ?></li>
-            <li>Retweet : <?php echo $Retweet_Count; ?></li>
-            <li>Favorite : <?php echo $Favorite_Count; ?></li>
+            <p class="retweet_sentence"><i class="fas fa-retweet fa-fw"></i><?php echo $RT_User; ?>がリツイート</p> <?php } ?>
+            <div id = "User_info">
+                <li><img src =<?php echo $Profile_image_URL; ?>></li>
+                <li id = "User_Name"><?php echo $User_Name ?></li>
+                <li id = "User_ID">@<?php echo $User_ID ?></li>
+            </div>
+            <li><?echo $Date ?></li>
+            <li><?php echo nl2br($Text); ?></li>
             <?php if($media_TRUE == TRUE){ ?>
-                <li>media : <?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>
-                <a href="<?php echo $media[$media_num]; ?>" class="img" data-lightbox="group<?php echo $Tweet_num; ?>" style="background-image: url(<?php echo $media[$media_num]; ?>);"></a><?php } ?></li>
-            <?php } ?>
+                <li><?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>
+                    <a href="<?php echo $media[$media_num]; ?>" class="img" data-lightbox="group<?php echo $Tweet_num; ?>" style="background-image: url(<?php echo $media[$media_num]; ?>);"></a><?php } ?></li>
+                    <?php } ?>
+            <div id = "RT_Counter">
+                <li><i class="fas fa-retweet fa-fw" style="color: green;"></i><?php echo $Retweet_Count; ?></li>
+                <li><i class="fas fa-heart" style="color: red;"></i> <?php echo $Favorite_Count; ?></li>
+            </div>
         </ul>
     <?php
         }

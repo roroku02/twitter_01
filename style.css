@@ -50,7 +50,36 @@ body {
     border-radius: 3px;
     width: auto;
     margin: 10px;
+    list-style-type: none;
+}
 
+.TimeLine .retweet_sentence {
+    color: green;
+    margin: 10px;
+}
+.TimeLine .fa-retweet {
+    font-size: 1.2em;
+    padding: 0;
+    margin: 0;
+    padding-right: 0.5em;
+}
+
+.TimeLine #User_info {
+    display: flex;
+    align-items: center;
+}
+.TimeLine #User_info #User_Name {
+    font-size: 1.1em;
+    font-weight: bold;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.TimeLine #RT_Counter {
+    display: flex;
+}
+
+.TimeLine #RT_Counter .fa-heart {
+    padding-left: 10px;
 }
 
 .TimeLine .img, .search .img{
