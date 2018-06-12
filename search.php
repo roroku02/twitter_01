@@ -10,7 +10,7 @@
     
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 10));
+    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 50));
 
 ?>
 
@@ -36,7 +36,7 @@
 </head>
 <header>
     <div id="title">
-        <h1>Title area.</h1>
+        <h1><i class="fab fa-twitter"></i></h1>
     </div>
 </header>
 
@@ -50,11 +50,32 @@
     //echo "debug mode<br><br>"; print_r($search_tweet);
     //**************************
     
-        $count = sizeof($search_tweet->{"statuses"});
-        for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
-            $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
-            $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"created_at"};
-            $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"text"};
+    $count = sizeof($search_tweet->{"statuses"});
+    for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
+        $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
+        $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"created_at"};
+        $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"text"};
+        $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"screen_name"};
+        $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"name"};
+        $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"profile_image_url_https"};
+        $Retweet_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweet_count"};
+        $Favorite_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"favorite_count"};
+        $Retweet_TRUE = FALSE;
+
+        //RT処理
+        if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"})){
+                $Retweet_TRUE = TRUE;
+                $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"created_at"};
+                $RT_User = $User_Name;
+                $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"text"};
+                $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
+                $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
+                $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
+                if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
+                    $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
+            }
+
+            //ハッシュタグ処理
             $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"});
             foreach($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
                 if(isset($hashtags)){
@@ -77,30 +98,29 @@
                     $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" target="_brank">'.$urls->display_url.'</a>',$Text);
                 }
             }
-            $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"screen_name"};
-            $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"name"};
-            $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"profile_image_url_https"};
-            $Retweet_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweet_count"};
-            $Favorite_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"favorite_count"};
+            
         ?>
-            <ul>
-                <li>Profile_image : <img src = <?php echo $Profile_image_URL; ?>></li>
-                <li>User Name : <?php echo $User_Name; ?></li>
-                <li>User ID : @<?php echo $User_ID; ?></li>
-                <li>Date : <?echo $Date; ?></li>
-                <li>TweetID : <?php echo $TweetID; ?></li>
-                <li>Tweet : <?php echo $Text; ?></li>
-                <?php if(isset($media_URL)){ ?>
-                    <li>Media : 
-                    <?php $media_Count = sizeof($media_URL);
-                    for($media_num = 0; $media_num < $media_Count; $media_num++){?>
-                        <a href="<?php echo $media_URL[$media_num] ?>" class="img" data-lightbox="group<?php echo $Tweet_num ?>" style="background-image: url(<?php echo $media_URL[$media_num] ?>)"></a>
-                    <?php }
-                }?>
-                </li>
-                <li>Retweet : <?php echo $Retweet_Count; ?></li>
-                <li>Favorite : <?php echo $Favorite_Count; ?></li>
-            </ul>
+            <ul <?php /*RTカラー変更*/ if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue; background-color: rgb(132, 255, 246);"'?>>
+            <?php if($Retweet_TRUE == TRUE){ ?>
+                <p class="retweet_sentence"><i class="fas fa-retweet fa-fw"></i><?php echo $RT_User; ?>がリツイート</p>
+                <?php } ?>
+            <div id = "User_info">
+                <li><img src =<?php echo $Profile_image_URL; ?>></li>
+                <li id = "User_Name"><?php echo $User_Name ?></li>
+                <li id = "User_ID">@<?php echo $User_ID ?></li>
+            </div>
+            <li><?echo $Date ?></li>
+            <li><?php echo nl2br($Text); ?></li>
+            <?php if(isset($media_URL)){ 
+                $media_Count = sizeof($media_URL);?>
+                <li><?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>
+                    <a href="<?php echo $media_URL[$media_num]; ?>" class="img" data-lightbox="group<?php echo $Tweet_num; ?>" style="background-image: url(<?php echo $media_URL[$media_num]; ?>);"></a><?php } ?></li>
+                    <?php } ?>
+            <div id = "RT_Counter">
+                <li><i class="fas fa-retweet fa-fw" style="color: green;"></i><?php echo $Retweet_Count; ?></li>
+                <li><i class="fas fa-heart" style="color: red;"></i> <?php echo $Favorite_Count; ?></li>
+            </div>
+        </ul>
     <?php
         }
     ?>

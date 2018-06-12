@@ -35,7 +35,7 @@ $tweet = "";
 </script>
 <header>
     <div id="title">
-        <h1>Title Area</h1>
+        <h1><i class="fab fa-twitter"></i></h1>
     </div>
 </header>
 
@@ -74,7 +74,6 @@ $tweet = "";
         if(isset($home[$Tweet_num]->{"retweeted_status"})){
             $Retweet_TRUE = TRUE;
             $Date = $home[$Tweet_num]->{"retweeted_status"}->{"created_at"};
-            
             $RT_User = $User_Name;
             $Text = $home[$Tweet_num]->{"retweeted_status"}->{"text"};
             $User_ID = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
