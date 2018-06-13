@@ -49,33 +49,39 @@
     <h2>"<?php echo $_GET['search_word']; ?>"のTwitter検索結果</h2>
     <?php
     //*******debug mode*********
-    echo "debug mode<br><br>"; print_r($search_tweet);
+    //echo "debug mode<br><br>"; print_r($search_tweet);
     //**************************
     
     $count = sizeof($search_tweet->{"statuses"});
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
         $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"created_at"};
-        $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"text"};
+        $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"full_text"};
         $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"name"};
         $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"profile_image_url_https"};
         $Retweet_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweet_count"};
         $Favorite_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"favorite_count"};
         $Retweet_TRUE = FALSE;
+        $media_URL = NULL;
 
         //RT処理
         if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"})){
-                $Retweet_TRUE = TRUE;
-                $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"created_at"};
-                $RT_User = $User_Name;
-                $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"text"};
-                $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
-                $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
-                $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
-                if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
-                    $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
+            $Retweet_TRUE = TRUE;
+            $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"created_at"};
+            $RT_User = $User_Name;
+            $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"full_text"};
+            $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
+            $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
+            $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
+            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
+                $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
+            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"})){
+                foreach($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"} as $media){
+                    $media_URL[] = $media->media_url_https;
+                }
             }
+        }
 
             //ハッシュタグ処理
             $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"});
@@ -89,7 +95,6 @@
                     $Text = $left_text . $after_text . $right_text;
                 }
             }
-            $media_URL = NULL;
             if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"extended_entities"}->{"media"})){
                 foreach($search_tweet->{"statuses"}[$Tweet_num]->{"extended_entities"}->{"media"} as $media){
                     $media_URL[] = $media->media_url_https;
@@ -102,7 +107,7 @@
             }
             
         ?>
-            <ul <?php /*RTカラー変更*/ if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue; background-color: rgb(132, 255, 246);"'?>>
+            <ul <?php /*RTカラー変更*/ if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue; background-color: rgb(255, 255, 255);"'?>>
             <?php if($Retweet_TRUE == TRUE){ ?>
                 <p class="retweet_sentence"><i class="fas fa-retweet fa-fw"></i><?php echo $RT_User; ?>がリツイート</p>
                 <?php } ?>

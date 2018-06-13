@@ -52,7 +52,7 @@ $tweet = "";
     <h1>Twitter HOME TIMELINE</h1>
     
     <?php
-    $home = $connection->get('statuses/home_timeline',array('count'=>50,'tweet_mode' => 'entended'));
+    $home = $connection->get('statuses/home_timeline',array('count'=>50,'tweet_mode' => 'extended'));
     
     //*******debug mode*********
     //echo "debug mode<br><br>"; print_r($home);
@@ -62,7 +62,7 @@ $tweet = "";
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $home[$Tweet_num]->{"id"};
         $Date = $home[$Tweet_num]->{"created_at"};
-        $Text = $home[$Tweet_num]->{"text"};
+        $Text = $home[$Tweet_num]->{"full_text"};
         $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
         $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
@@ -75,7 +75,7 @@ $tweet = "";
             $Retweet_TRUE = TRUE;
             $Date = $home[$Tweet_num]->{"retweeted_status"}->{"created_at"};
             $RT_User = $User_Name;
-            $Text = $home[$Tweet_num]->{"retweeted_status"}->{"text"};
+            $Text = $home[$Tweet_num]->{"retweeted_status"}->{"full_text"};
             $User_ID = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
             $User_Name = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
             $Profile_image_URL = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
@@ -116,7 +116,7 @@ $tweet = "";
     ?>
 
         <!-- 出力 -->
-        <ul <?php /*RTカラー変更*/ if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue; background-color: rgb(132, 255, 246);"'?>>
+        <ul <?php /*RTカラー変更*/ if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue;"'?>>
             <?php if($Retweet_TRUE == TRUE){ ?>
             <p class="retweet_sentence"><i class="fas fa-retweet fa-fw"></i><?php echo $RT_User; ?>がリツイート</p> <?php } ?>
             <div id = "User_info">

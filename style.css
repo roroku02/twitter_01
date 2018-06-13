@@ -60,7 +60,7 @@ body {
 
 .TimeLine .retweet_sentence, .search .retweet_sentence{
     color: green;
-    margin: 10px;
+    margin-top: 0;
 }
 .TimeLine .fa-retweet, .search .fa-retweet{
     font-size: 1.2em;
