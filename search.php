@@ -10,7 +10,7 @@
     
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 50));
+    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 50,'tweet_mode' => 'extended'));
 
 ?>
 
@@ -21,6 +21,8 @@
     <title><?php echo $_GET['search_word'];?>の検索結果</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link href="http://fonts.googleapis.com/earlyaccess/sawarabigothic.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/earlyaccess/mplus1p.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <script type="text/javascript" src = "js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/lightbox.css" />
@@ -47,7 +49,7 @@
     <h2>"<?php echo $_GET['search_word']; ?>"のTwitter検索結果</h2>
     <?php
     //*******debug mode*********
-    //echo "debug mode<br><br>"; print_r($search_tweet);
+    echo "debug mode<br><br>"; print_r($search_tweet);
     //**************************
     
     $count = sizeof($search_tweet->{"statuses"});

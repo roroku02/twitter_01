@@ -52,7 +52,7 @@ $tweet = "";
     <h1>Twitter HOME TIMELINE</h1>
     
     <?php
-    $home = $connection->get('statuses/home_timeline',array('count'=>50));
+    $home = $connection->get('statuses/home_timeline',array('count'=>50,'tweet_mode' => 'entended'));
     
     //*******debug mode*********
     //echo "debug mode<br><br>"; print_r($home);
