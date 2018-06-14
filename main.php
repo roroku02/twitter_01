@@ -40,6 +40,12 @@ $tweet = "";
 </header>
 
 <body>
+    <section>
+    <?php
+    $list = $connection -> get('lists/list');
+    print_r($list);?>
+    </section>
+
     <section class="Tweet">
         <h1>Tweet</h1>
         <form action="tweet.php" method="post">
