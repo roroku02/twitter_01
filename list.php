@@ -10,10 +10,7 @@ $AccessToken = $_SESSION['access_token'];
 
 $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-$tweet = "";
 ?>
-
-
 <!DOCTYPE html>
 
 <head>
@@ -38,56 +35,54 @@ $tweet = "";
         <h1><i class="fab fa-twitter"></i></h1>
     </div>
 </header>
+    
+    <section>
+    <?php
+    $list = $connection -> get('lists/list');
+    
+    $list_Count = sizeof($list);
+    for($list_num = 0;$list_num < $list_Count;$list_num++){
+        $list_ID[] = $list[$list_num]->{"id"};
+        $list_name[] = $list[$list_num]->{"slug"};
+    }
+    $list_ID = array_merge($list_ID,$list_name);
+    print_r($list_ID);
 
-<body>
+    $list_statuses = $connection -> get('lists/statuses', array('list_id' => $list_ID[0],'count'=>50,'tweet_mode' => 'extended'));
 
-
-    <section class="Tweet">
-        <h1>Tweet</h1>
-        <form action="tweet.php" method="post">
-            <textarea name="Tweet" id="Tweet" cols="50" rows="3" placeholder="今どうしてる？"></textarea>
-            <input type="submit" value="Tweet" class="Tweet_button">
-        </form>
+    print_r($list_statuses);
+    ?>
     </section>
 
-    <section class="TimeLine">
-    <h1>Twitter HOME TIMELINE</h1>
-    
-    <?php
-    $home = $connection->get('statuses/home_timeline',array('count'=>50,'tweet_mode' => 'extended'));
-    
-    //*******debug mode*********
-    //echo "debug mode<br><br>"; print_r($home);
-    //***************************
-
-    $count = sizeof($home);
+<?php
+    $count = sizeof($list_statuses);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
-        $TweetID = $home[$Tweet_num]->{"id"};
-        $Date = $home[$Tweet_num]->{"created_at"};
-        $Text = $home[$Tweet_num]->{"full_text"};
-        $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
-        $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
-        $Profile_image_URL = $home[$Tweet_num]->{"user"}->{"profile_image_url_https"};
-        $Retweet_Count = $home[$Tweet_num]->{"retweet_count"};
-        $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
+        $TweetID = $list_statuses[$Tweet_num]->{"id"};
+        $Date = $list_statuses[$Tweet_num]->{"created_at"};
+        $Text = $list_statuses[$Tweet_num]->{"full_text"};
+        $User_ID = $list_statuses[$Tweet_num]->{"user"}->{"screen_name"};
+        $User_Name = $list_statuses[$Tweet_num]->{"user"}->{"name"};
+        $Profile_image_URL = $list_statuses[$Tweet_num]->{"user"}->{"profile_image_url_https"};
+        $Retweet_Count = $list_statuses[$Tweet_num]->{"retweet_count"};
+        $Favorite_Count = $list_statuses[$Tweet_num]->{"favorite_count"};
         $Retweet_TRUE = FALSE;
 
         //RT処理
-        if(isset($home[$Tweet_num]->{"retweeted_status"})){
+        if(isset($list_statuses[$Tweet_num]->{"retweeted_status"})){
             $Retweet_TRUE = TRUE;
-            $Date = $home[$Tweet_num]->{"retweeted_status"}->{"created_at"};
+            $Date = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"created_at"};
             $RT_User = $User_Name;
-            $Text = $home[$Tweet_num]->{"retweeted_status"}->{"full_text"};
-            $User_ID = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
-            $User_Name = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
-            $Profile_image_URL = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
-            if(isset($home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
-                $home[$Tweet_num]->{"entities"}->{"hashtags"} = $home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
+            $Text = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"full_text"};
+            $User_ID = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
+            $User_Name = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
+            $Profile_image_URL = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
+            if(isset($list_statuses[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
+                $list_statuses[$Tweet_num]->{"entities"}->{"hashtags"} = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
         }
 
         //ハッシュタグ処理
-        $home[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($home[$Tweet_num]->{"entities"}->{"hashtags"});
-        foreach($home[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
+        $list_statuses[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($list_statuses[$Tweet_num]->{"entities"}->{"hashtags"});
+        foreach($list_statuses[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
             if(isset($hashtags)){
                 $hashtag_text = $hashtags->text;
                 $hashtag_indices = $hashtags->indices;
@@ -99,20 +94,20 @@ $tweet = "";
         }
 
         //URL処理
-        if(isset($home[$Tweet_num]->{"entities"}->{"urls"})){
-            foreach($home[$Tweet_num]->{"entities"}->{"urls"} as $urls){
+        if(isset($list_statuses[$Tweet_num]->{"entities"}->{"urls"})){
+            foreach($list_statuses[$Tweet_num]->{"entities"}->{"urls"} as $urls){
                 $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" target="_brank">'.$urls->display_url.'</a>',$Text);
             }
         }
 
         //画像処理
         $media_TRUE = FALSE;
-        if(isset ($home[$Tweet_num]->{"entities"}->{"media"})){
+        if(isset ($list_statuses[$Tweet_num]->{"entities"}->{"media"})){
             $media_TRUE = TRUE;
-            $media_Count = sizeof($home[$Tweet_num]->{"extended_entities"}->{"media"});
+            $media_Count = sizeof($list_statuses[$Tweet_num]->{"extended_entities"}->{"media"});
             $media = [];
             for($media_num = 0;$media_num < $media_Count;$media_num++) {
-                $media[$media_num] = $home[$Tweet_num]->{"extended_entities"}->{"media"}[$media_num]->{"media_url_https"};
+                $media[$media_num] = $list_statuses[$Tweet_num]->{"extended_entities"}->{"media"}[$media_num]->{"media_url_https"};
             }
         }
     ?>
@@ -141,22 +136,3 @@ $tweet = "";
         }
     ?>
     </section>
-
-    <section class="search">
-        <h1>Search</h1>
-        <form action="search.php" method="get">
-            <input type="text" name="search_word" placeholder="キーワード検索">
-            <input type="submit" value="検索">
-        </form>
-    </section>
-
-</body>
-
-
-<footer>
-    <div id="title">
-        <h1>footer area.</h1>
-    </div>
-</footer>
-
-</html>
