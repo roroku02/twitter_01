@@ -74,6 +74,8 @@
             $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
             $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
             $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
+            $Retweet_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"retweet_count"};
+            $Favorite_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"favorite_count"};    
             if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
                 $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
             if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"})){

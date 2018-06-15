@@ -41,7 +41,6 @@ $tweet = "";
 
 <body>
 
-
     <section class="Tweet">
         <h1>Tweet</h1>
         <form action="tweet.php" method="post">
@@ -50,6 +49,28 @@ $tweet = "";
         </form>
     </section>
 
+    <section class="list_option">
+    <?php
+    $list = $connection -> get('lists/list');
+    
+    $list_Count = sizeof($list);
+    for($list_num = 0;$list_num < $list_Count;$list_num++){
+        $list_ID[] = $list[$list_num]->{"id"};
+        $list_name[] = $list[$list_num]->{"slug"};
+    }
+    $list_lists = array($list_ID,$list_name);
+    ?>
+
+    <form action="list.php" method="get">
+    <select name="list" onchange="this.form.submit()">
+        <option>表示するリストを選択してください</option>
+        <?php for($i = 0;$i < $list_Count;$i++){ ?>
+            <option value= "<?php echo $list_ID[$i]; ?>"><?php echo $list_name[$i]; ?></option>
+        <?php } ?>
+    </select>
+    </form>
+    </section>
+    
     <section class="TimeLine">
     <h1>Twitter HOME TIMELINE</h1>
     
@@ -81,6 +102,8 @@ $tweet = "";
             $User_ID = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
             $User_Name = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
             $Profile_image_URL = $home[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
+            $Retweet_Count = $home[$Tweet_num]->{"retweeted_status"}->{"retweet_count"};
+            $Favorite_Count = $home[$Tweet_num]->{"retweeted_status"}->{"favorite_count"};    
             if(isset($home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
                 $home[$Tweet_num]->{"entities"}->{"hashtags"} = $home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
         }

@@ -38,22 +38,13 @@ $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_
     
     <section>
     <?php
-    $list = $connection -> get('lists/list');
-    
-    $list_Count = sizeof($list);
-    for($list_num = 0;$list_num < $list_Count;$list_num++){
-        $list_ID[] = $list[$list_num]->{"id"};
-        $list_name[] = $list[$list_num]->{"slug"};
-    }
-    $list_ID = array_merge($list_ID,$list_name);
-    print_r($list_ID);
-
     $list_statuses = $connection -> get('lists/statuses', array('list_id' => $list_ID[0],'count'=>50,'tweet_mode' => 'extended'));
 
     print_r($list_statuses);
     ?>
     </section>
 
+<section class="TimeLine">
 <?php
     $count = sizeof($list_statuses);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
@@ -76,6 +67,8 @@ $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_
             $User_ID = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
             $User_Name = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
             $Profile_image_URL = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
+            $Retweet_Count = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"retweet_count"};
+            $Favorite_Count = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"favorite_count"};    
             if(isset($list_statuses[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
                 $list_statuses[$Tweet_num]->{"entities"}->{"hashtags"} = $list_statuses[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
         }
