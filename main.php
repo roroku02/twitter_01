@@ -50,6 +50,7 @@ $tweet = "";
     </section>
 
     <section class="list_option">
+    <h1>リストタイムライン</h1>
     <?php
     $list = $connection -> get('lists/list');
     
@@ -60,10 +61,9 @@ $tweet = "";
     }
     $list_lists = array($list_ID,$list_name);
     ?>
-
     <form action="list.php" method="get">
-    <select name="list" onchange="this.form.submit()">
-        <option>表示するリストを選択してください</option>
+    <select name="list_id" onchange="this.form.submit()">
+        <option selected>表示するリストを選択してください</option>
         <?php for($i = 0;$i < $list_Count;$i++){ ?>
             <option value= "<?php echo $list_ID[$i]; ?>"><?php echo $list_name[$i]; ?></option>
         <?php } ?>
@@ -76,6 +76,7 @@ $tweet = "";
     
     <?php
     $home = $connection->get('statuses/home_timeline',array('count'=>50,'tweet_mode' => 'extended'));
+    $now_time = time();
     
     //*******debug mode*********
     //echo "debug mode<br><br>"; print_r($home);
@@ -85,6 +86,8 @@ $tweet = "";
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $home[$Tweet_num]->{"id"};
         $Date = $home[$Tweet_num]->{"created_at"};
+        $Tweet_time = strtotime($Date);
+        $relative_time = $now_time - $Tweet_time;
         $Text = $home[$Tweet_num]->{"full_text"};
         $User_ID = $home[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $home[$Tweet_num]->{"user"}->{"name"};
@@ -149,7 +152,16 @@ $tweet = "";
                 <li id = "User_Name"><?php echo $User_Name ?></li>
                 <li id = "User_ID">@<?php echo $User_ID ?></li>
             </div>
-            <li><?echo $Date ?></li>
+            <li><?php if($relative_time < 60){ 
+                echo $relative_time . "秒前";
+            }elseif($relative_time >= 60 && $relative_time < (60 * 60)){
+                echo floor($relative_time / 60) . "分前";
+            }elseif($relative_time >= (60 * 60) && $relative_time < (60 * 60 * 24)){
+                echo floor($relative_time / (60 * 60)) . "時間前";
+            }elseif($relative_time >= (60 * 60 * 24)){
+                echo date("n月j日",$tweet_time);
+            }
+             ?></li>
             <li><?php echo nl2br($Text); ?></li>
             <?php if($media_TRUE == TRUE){ ?>
                 <li><?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>

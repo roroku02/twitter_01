@@ -38,18 +38,24 @@ $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_
     
     <section>
     <?php
-    $list_statuses = $connection -> get('lists/statuses', array('list_id' => $list_ID[0],'count'=>50,'tweet_mode' => 'extended'));
+    $list_statuses = $connection -> get('lists/statuses', array('list_id' => $_GET['list_id'],'count'=>50,'tweet_mode' => 'extended'));
+    $now_time = time();
 
-    print_r($list_statuses);
-    ?>
+    //*******debug mode*********
+    //echo "debug mode<br><br>"; print_r($list_statuses);
+    //***************************    ?>
     </section>
 
 <section class="TimeLine">
+    <h1>リストタイムライン</h1>
+    <a href="main.php">タイムラインに戻る</a>
 <?php
     $count = sizeof($list_statuses);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $list_statuses[$Tweet_num]->{"id"};
         $Date = $list_statuses[$Tweet_num]->{"created_at"};
+        $Tweet_time = strtotime($Date);
+        $relative_time = $now_time - $Tweet_time;
         $Text = $list_statuses[$Tweet_num]->{"full_text"};
         $User_ID = $list_statuses[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $list_statuses[$Tweet_num]->{"user"}->{"name"};
@@ -114,7 +120,16 @@ $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_
                 <li id = "User_Name"><?php echo $User_Name ?></li>
                 <li id = "User_ID">@<?php echo $User_ID ?></li>
             </div>
-            <li><?echo $Date ?></li>
+            <li><?php if($relative_time < 60){ 
+                echo $relative_time . "秒前";
+            }elseif($relative_time >= 60 && $relative_time < (60 * 60)){
+                echo floor($relative_time / 60) . "分前";
+            }elseif($relative_time >= (60 * 60) && $relative_time < (60 * 60 * 24)){
+                echo floor($relative_time / (60 * 60)) . "時間前";
+            }elseif($relative_time >= (60 * 60 * 24)){
+                echo date("n月j日",$tweet_time);
+            }
+             ?></li>
             <li><?php echo nl2br($Text); ?></li>
             <?php if($media_TRUE == TRUE){ ?>
                 <li><?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>

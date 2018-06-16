@@ -11,6 +11,7 @@
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
     $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 50,'tweet_mode' => 'extended'));
+    $now_time = time();
 
 ?>
 
@@ -56,6 +57,8 @@
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
         $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"created_at"};
+        $Tweet_time = strtotime($Date);
+        $relative_time = $now_time - $Tweet_time;
         $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"full_text"};
         $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"screen_name"};
         $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"name"};
@@ -118,7 +121,16 @@
                 <li id = "User_Name"><?php echo $User_Name ?></li>
                 <li id = "User_ID">@<?php echo $User_ID ?></li>
             </div>
-            <li><?echo $Date ?></li>
+            <li><?php if($relative_time < 60){ 
+                echo $relative_time . "秒前";
+            }elseif($relative_time >= 60 && $relative_time < (60 * 60)){
+                echo floor($relative_time / 60) . "分前";
+            }elseif($relative_time >= (60 * 60) && $relative_time < (60 * 60 * 24)){
+                echo floor($relative_time / (60 * 60)) . "時間前";
+            }elseif($relative_time >= (60 * 60 * 24)){
+                echo date("n月j日",$tweet_time);
+            }
+             ?></li>
             <li><?php echo nl2br($Text); ?></li>
             <?php if(isset($media_URL)){ 
                 $media_Count = sizeof($media_URL);?>
