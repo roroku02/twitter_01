@@ -144,24 +144,26 @@ $tweet = "";
     ?>
 
         <!-- 出力 -->
-        <ul <?php /*RTカラー変更*/ if($Retweet_TRUE == TRUE) echo 'style = "border: 2px solid blue;"'?>>
+        <ul>
             <?php if($Retweet_TRUE == TRUE){ ?>
             <p class="retweet_sentence"><i class="fas fa-retweet fa-fw"></i><?php echo $RT_User; ?>がリツイート</p> <?php } ?>
-            <div id = "User_info">
-                <li><img src =<?php echo $Profile_image_URL; ?>></li>
-                <li id = "User_Name"><?php echo $User_Name ?></li>
-                <li id = "User_ID">@<?php echo $User_ID ?></li>
+            <div id = "Tweet_header">
+                <div id = "User_info">
+                    <li><img src =<?php echo $Profile_image_URL; ?>></li>
+                    <li id = "User_Name"><?php echo $User_Name ?></li>
+                    <li id = "User_ID">@<?php echo $User_ID ?></li>
+                </div>
+                    <li><?php if($relative_time < 60){ 
+                        echo $relative_time . "秒前";
+                    }elseif($relative_time >= 60 && $relative_time < (60 * 60)){
+                        echo floor($relative_time / 60) . "分前";
+                    }elseif($relative_time >= (60 * 60) && $relative_time < (60 * 60 * 24)){
+                        echo floor($relative_time / (60 * 60)) . "時間前";
+                    }elseif($relative_time >= (60 * 60 * 24)){
+                        echo date("n月j日",$tweet_time);
+                    }
+                    ?></li>
             </div>
-            <li><?php if($relative_time < 60){ 
-                echo $relative_time . "秒前";
-            }elseif($relative_time >= 60 && $relative_time < (60 * 60)){
-                echo floor($relative_time / 60) . "分前";
-            }elseif($relative_time >= (60 * 60) && $relative_time < (60 * 60 * 24)){
-                echo floor($relative_time / (60 * 60)) . "時間前";
-            }elseif($relative_time >= (60 * 60 * 24)){
-                echo date("n月j日",$tweet_time);
-            }
-             ?></li>
             <li><?php echo nl2br($Text); ?></li>
             <?php if($media_TRUE == TRUE){ ?>
                 <li><?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>
@@ -178,7 +180,7 @@ $tweet = "";
     </section>
 
     <section class="search">
-        <h1>Search</h1>
+        <h1>Search<a name = "search"></a></h1>
         <form action="search.php" method="get">
             <input type="text" name="search_word" placeholder="キーワード検索">
             <input type="submit" value="検索">
@@ -190,7 +192,7 @@ $tweet = "";
 
 <footer>
     <div id="title">
-        <h1>footer area.</h1>
+        <h1><a href="#search"><i class="fas fa-search"></i></a></h1>
     </div>
 </footer>
 

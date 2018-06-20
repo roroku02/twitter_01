@@ -4,6 +4,12 @@
     font-family: "Rounded Mplus 1c", "Sawarabi Gothic", meiryo;
 }
 
+@media (max-width: 899px){
+    :root {
+        font-size: 14px;
+    }
+}
+
 header {
     height: 50px;
     width: 100%;
@@ -30,8 +36,6 @@ header h1{
 
 body {
     margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
     margin-bottom: 50px;
     max-width: 900px;
 }
@@ -50,11 +54,9 @@ body {
 }
 
 .TimeLine ul, .search ul{
-    border: 1px solid #000;
-    border-radius: 3px;
+    border-bottom: 1px solid rgb(165, 165, 165);
     width: auto;
-    margin: 10px;
-    padding: 20px;
+    padding: 10px;
     list-style-type: none;
 }
 
@@ -73,6 +75,13 @@ body {
     display: flex;
     align-items: center;
 }
+
+.TimeLine #Tweet_header, .search #Tweet_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .TimeLine #User_info #User_Name, .search #User_info #User_Name{
     font-size: 1.1em;
     font-weight: bold;
@@ -96,10 +105,12 @@ body {
     background-position: center;
 }
 
-@media ( max-width: 1200px ){
+@media ( max-width: 899px ){
     body {
         margin-left: 10px;
         margin-right: 10px;
+        margin-top: 50px;
+        margin-bottom: 50px;
     }
 
     .Tweet #Tweet{
@@ -107,13 +118,15 @@ body {
     }
 }
 
-@media (min-width: 768px) {
-    .TimeLine ul, .search ul {
-        max-width: 1200px;
-        margin: 10px;
+@media (min-width: 900px) {
+    body {
+        max-width: 900px;
+        margin-top: 50px;
+        margin-bottom: 50px;
         margin-left: auto;
         margin-right: auto;
     }
+
 }
 
 footer {
