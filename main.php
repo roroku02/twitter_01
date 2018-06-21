@@ -25,6 +25,7 @@ $tweet = "";
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/lightbox.js"></script>
+    <script type="text/javascript" src="js/pulltorefresh.js"></script>
 </head>
 <script>
     lightbox.option ({
@@ -32,6 +33,10 @@ $tweet = "";
         'fadeDuration': 200,
         'resizeDuration': 400
     })
+    PullToRefresh.init({
+        mainElement: 'body',
+        onRefresh: function(){ window.location.reload(); }
+    });
 </script>
 <header>
     <div id="title">
@@ -40,7 +45,6 @@ $tweet = "";
 </header>
 
 <body>
-
     <section class="Tweet">
         <h1>Tweet</h1>
         <form action="tweet.php" method="post">
