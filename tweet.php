@@ -10,7 +10,20 @@
 
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    $connection->post('statuses/update', ['status' => $_POST['Tweet']]);
+    $upload_media1 = './images/キャプチャ.png';
+    $upload_media2 = [];
+    $upload_media3 = [];
+    $upload_media4 = [];
+    $media_ids=[];
+    if(isset($upload_media1)){
+        $parameter1 = $connection->upload('media/upload',['media' => $upload_media1]);
+        $media_ids = $parameter1 -> {"media_id_string"};
+    }
+    echo $media_ids;
+
+    //$Tweet = $_POST['Tweet'];
+    $Tweet = "@tos";
+    $connection->post('statuses/update', ['status' => $Tweet,'media_ids' => $media_ids]);
     
-    header('location: ./main.php');
+    //header('location: ./main.php');
 ?>
