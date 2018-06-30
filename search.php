@@ -25,7 +25,11 @@
     <link href="http://fonts.googleapis.com/earlyaccess/sawarabigothic.css" rel="stylesheet" />
     <link href="http://fonts.googleapis.com/earlyaccess/mplus1p.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-    <script type="text/javascript" src = "js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/colorbox.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/lightbox.js"></script>
+    <script type="text/javascript" src="js/jquery.colorbox-min.js"></script>
+    <script type="text/javascript" src="js/jquery.colorbox-ja.js"></script>
     <link rel="stylesheet" type="text/css" href="css/lightbox.css" />
     <script type="text/javascript" src="js/lightbox.js"></script>
 </head>
@@ -35,6 +39,9 @@
         'fadeDuration': 200,
         'resizeDuration': 400
     })
+    $(document).ready(function(){
+      $(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
+   });
 </script>
 </head>
 <header>
@@ -107,7 +114,7 @@
             }
             if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"urls"})){
                 foreach($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"urls"} as $urls){
-                    $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" target="_brank">'.$urls->display_url.'</a>',$Text);
+                    $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" class= "iframe">'.$urls->display_url.'</a>',$Text);
                 }
             }
             

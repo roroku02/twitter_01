@@ -11,6 +11,15 @@ $AccessToken = $_SESSION['access_token'];
 $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
 $tweet = "";
+
+$anime_tag_url = "http://api.moemoe.tokyo/anime/v1/master/2018";
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $anime_tag_url); // 取得するURLを指定
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 実行結果を文字列で返す
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // サーバー証明書の検証を行わない
+$response = curl_exec($ch);
+echo $response;
+curl_close($ch); 
 ?>
 
 
@@ -130,7 +139,7 @@ $tweet = "";
                 $hashtag_indices = $hashtags->indices;
                 $left_text = mb_substr($Text,0,$hashtag_indices[0]);
                 $right_text = mb_substr($Text,($hashtag_indices[0] + ($hashtag_indices[1] - $hashtag_indices[0])));
-                $after_text = '<a href="http://localhost/twitter_01/search.php?search_word=' . rawurlencode("#" . $hashtag_text) . '">#' . $hashtag_text . '</a>';
+                $after_text = '<a href="http://localhost/twitter_01/search.php?search_word=' . rawurlencode("#" . $hashtag_text) . '" class= "iframe">#' . $hashtag_text . '</a>';
                 $Text = $left_text . $after_text . $right_text;
             }
         }
