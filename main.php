@@ -12,14 +12,6 @@ $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_
 
 $tweet = "";
 
-$anime_tag_url = "http://api.moemoe.tokyo/anime/v1/master/2018";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $anime_tag_url); // 取得するURLを指定
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 実行結果を文字列で返す
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // サーバー証明書の検証を行わない
-$response = curl_exec($ch);
-echo $response;
-curl_close($ch); 
 ?>
 
 
