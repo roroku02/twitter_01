@@ -179,7 +179,7 @@ $tweet = "";
             <li><?php echo nl2br($Text); ?></li>
             <?php if($media_TRUE == TRUE){ ?>
                 <li><?php for($media_num = 0;$media_num < $media_Count;$media_num++) { ?>
-                    <a href="<?php echo $media[$media_num]; ?>" class="img" data-lightbox="group<?php echo $Tweet_num; ?>" style="background-image: url(<?php echo $media[$media_num]; ?>);"></a><?php } ?></li>
+                    <a href="<?php echo $media[$media_num]; ?>" class="img" data-lightbox="group<?php echo $Tweet_num; ?>" style="background-image: url(<?php echo $media[$media_num] .':small'; ?>);"></a><?php } ?></li>
                     <?php } ?>
             <div id = "RT_Counter">
                 <li><i class="fas fa-retweet fa-fw" style="color: green;"></i><?php echo $Retweet_Count; ?></li>
