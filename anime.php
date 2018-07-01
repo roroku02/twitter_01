@@ -75,10 +75,16 @@ curl_close($ch);
         }else $anime_tag[$i] = NULL;
         echo '<tr><td>' .$anime_title[$i]. '</th><td>#' .$anime_tag[$i]. '</td></tr>';
     }
-
     ?>
 </table>
 
+<section class="option">
+    <?php for($i = 0;$i < count($anime_title);$i++){?>
+    <form action="search.php" method="get">
+        <button type="submit" name="search_word" value="#<?php echo $anime_tag[$i]; ?>"><?php echo $anime_title[$i]; ?></button>
+    </form>
+    <? } ?>
+</section>
 </body>
 
 </html>
