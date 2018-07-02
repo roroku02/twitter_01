@@ -10,7 +10,11 @@
     
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 50,'tweet_mode' => 'extended'));
+    if(isset($_GET['option'])){
+        $tweet_sort = $_GET['option'];
+    }else $tweet_sort = "popular";
+
+    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 50,'tweet_mode' => 'extended', 'result_type' => $tweet_sort));
     $now_time = time();
 
 ?>
@@ -59,7 +63,14 @@
     //*******debug mode*********
     //echo "debug mode<br><br>"; print_r($search_tweet);
     //**************************
-    
+
+   ?>
+   <h2>並び替え</h2>
+   <form action="search.php" method="get">
+       <input type="radio" name="option" value="recent" onchange="this.form.submit()">新しい順</input>
+       <input type="radio" name="option" value="popular" onchange="this.form.submit()">人気度順</input> 
+    </form>
+    <?php
     $count = sizeof($search_tweet->{"statuses"});
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};

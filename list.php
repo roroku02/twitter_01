@@ -49,7 +49,7 @@ $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_
     $now_time = time();
 
     //*******debug mode*********
-    echo "debug mode<br><br>"; print_r($list_statuses);
+    //echo "debug mode<br><br>"; print_r($list_statuses);
     //***************************    ?>
     </section>
 

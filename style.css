@@ -105,6 +105,17 @@ body {
     background-position: center;
 }
 
+.option #search_button {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.option button {
+    height: 50px;
+    margin: 20px;
+    flex: 1 1 300px;
+}
+
 @media ( max-width: 899px ){
     body {
         margin-left: 10px;

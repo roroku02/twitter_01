@@ -81,6 +81,23 @@ $tweet = "";
         <?php } ?>
     </select>
     </form>
+    <h1>アニメタグ検索</h1>
+    <form action="anime.php" method="get">
+        <select name="year">
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2016</option>
+            <option value="2018">2018</option>
+        </select>
+        <select name="season">
+            <option value="1">冬</option>
+            <option value="2">春</option>
+            <option value="3">夏</option>
+            <option value="4">秋</option>
+        </select>
+        <input type="submit" value="実行">
+    </form>
     </section>
     
     <section class="TimeLine">

@@ -12,7 +12,11 @@ $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_
 
 $tweet = "";
 
-$anime_tag_url = "http://api.moemoe.tokyo/anime/v1/master/2018/3";
+$year = $_GET['year'];
+$season = $_GET['season'];
+
+$anime_tag_url = "http://api.moemoe.tokyo/anime/v1/master/$year/$season";
+//echo $anime_tag_url;
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $anime_tag_url); // 取得するURLを指定
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 実行結果を文字列で返す
@@ -21,7 +25,6 @@ $response = curl_exec($ch);
 $response = json_decode($response, true);
 //print_r($response);
 curl_close($ch); 
-
 ?>
 
 <!DOCTYPE html>
@@ -79,11 +82,12 @@ curl_close($ch);
 </table>
 
 <section class="option">
-    <?php for($i = 0;$i < count($anime_title);$i++){?>
-    <form action="search.php" method="get">
-        <button type="submit" name="search_word" value="#<?php echo $anime_tag[$i]; ?>"><?php echo $anime_title[$i]; ?></button>
+    <h1>タイトルをクリックすると検索します</h1>
+    <form action="search.php" method="get" id="search_button">
+        <?php for($i = 0;$i < count($anime_title);$i++){?>
+            <button type="submit" name="search_word" value="#<?php echo $anime_tag[$i]; ?>"><?php echo $anime_title[$i]; ?></button>
+        <?php } ?>
     </form>
-    <? } ?>
 </section>
 </body>
 
