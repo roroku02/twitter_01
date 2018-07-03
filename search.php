@@ -17,9 +17,8 @@
         $_SESSION['search_word'] = $_GET['search_word'];
     }
 
-    $search_tweet = $connection -> get('search/tweets',array('q' => $_SESSION['search_word'] .'exclude:retweets','count' => 50,'tweet_mode' => 'extended', 'result_type' => $tweet_sort));
+    $search_tweet = $connection -> get('search/tweets',array('q' => $_SESSION['search_word'] .' exclude:retweets','count' => 50,'tweet_mode' => 'extended', 'result_type' => $tweet_sort));
     $now_time = time();
-
 ?>
 
 <!DOCTYPE html>
