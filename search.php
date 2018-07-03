@@ -12,9 +12,12 @@
 
     if(isset($_GET['option'])){
         $tweet_sort = $_GET['option'];
-    }else $tweet_sort = "popular";
+    }else{
+        $tweet_sort = "recent";
+        $_SESSION['search_word'] = $_GET['search_word'];
+    }
 
-    $search_tweet = $connection -> get('search/tweets',array('q' => $_GET['search_word'],'count' => 50,'tweet_mode' => 'extended', 'result_type' => $tweet_sort));
+    $search_tweet = $connection -> get('search/tweets',array('q' => $_SESSION['search_word'] .'exclude:retweets','count' => 50,'tweet_mode' => 'extended', 'result_type' => $tweet_sort));
     $now_time = time();
 
 ?>
@@ -23,7 +26,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title><?php echo $_GET['search_word'];?>の検索結果</title>
+    <title><?php echo $_SESSION['search_word']; ?>の検索結果</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link href="http://fonts.googleapis.com/earlyaccess/sawarabigothic.css" rel="stylesheet" />
@@ -58,7 +61,7 @@
     <section class="search">
 <a href="main.php">タイムラインに戻る</a>
 <br>
-    <h2>"<?php echo $_GET['search_word']; ?>"のTwitter検索結果</h2>
+    <h2>"<?php echo $_SESSION['search_word']; ?>"のTwitter検索結果</h2>
     <?php
     //*******debug mode*********
     //echo "debug mode<br><br>"; print_r($search_tweet);
