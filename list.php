@@ -135,7 +135,7 @@ $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_
                 }elseif($relative_time >= (60 * 60) && $relative_time < (60 * 60 * 24)){
                     echo floor($relative_time / (60 * 60)) . "時間前";
                 }elseif($relative_time >= (60 * 60 * 24)){
-                    echo date("n月j日",$tweet_time);
+                    echo date("Y/n/j G:i",$Tweet_time);
                 }?>
                 </li>
             </div>

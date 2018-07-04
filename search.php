@@ -10,15 +10,28 @@
     
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
+    $RT_sort = NULL;
     if(isset($_GET['option'])){
-        $tweet_sort = $_GET['option'];
+        if($_GET['option'] == "popular"){
+            $tweet_sort = $_GET['option'];
+        }elseif($_GET['option'] == "rt"){
+            $RT_sort = TRUE;
+            $tweet_sort = "recent";
+        }
     }else{
         $tweet_sort = "recent";
         $_SESSION['search_word'] = $_GET['search_word'];
     }
 
-    $search_tweet = $connection -> get('search/tweets',array('q' => $_SESSION['search_word'] .' exclude:retweets','count' => 50,'tweet_mode' => 'extended', 'result_type' => $tweet_sort));
+    $search_tweet = $connection -> get('search/tweets',array('q' => $_SESSION['search_word'] .' exclude:retweets min_retweets:1000','count' => 50,'tweet_mode' => 'extended', 'result_type' => $tweet_sort));
     $now_time = time();
+
+    if($RT_sort == TRUE){
+        foreach($search_tweet->{"statuses"} as $key => $value){
+            $sort[$key] = $value->retweet_count;
+        }
+        array_multisort($sort,SORT_DESC,$search_tweet->{"statuses"});
+    }
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +84,7 @@
    <form action="search.php" method="get">
        <input type="radio" name="option" value="recent" onchange="this.form.submit()">新しい順</input>
        <input type="radio" name="option" value="popular" onchange="this.form.submit()">人気度順</input> 
+       <input type="radio" name="option" value="rt" onchange="this.form.submit()">RT順</input> 
     </form>
     <?php
     $count = sizeof($search_tweet->{"statuses"});
@@ -149,7 +163,7 @@
                 }elseif($relative_time >= (60 * 60) && $relative_time < (60 * 60 * 24)){
                     echo floor($relative_time / (60 * 60)) . "時間前";
                 }elseif($relative_time >= (60 * 60 * 24)){
-                    echo date("n月j日",$tweet_time);
+                    echo date("Y/n/j G:i",$Tweet_time);
                 }?>
                 </li>
             </div>

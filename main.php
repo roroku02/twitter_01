@@ -45,6 +45,9 @@ $tweet = "";
    $(document).ready(function(){
       $(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
    });
+   function msgpopup(){
+       alert("現在ツイート機能を利用できません。");
+   }
 </script>
 <header>
     <div id="title">
@@ -57,7 +60,7 @@ $tweet = "";
         <h1>Tweet</h1>
         <form action="tweet.php" method="post">
             <textarea name="Tweet" id="Tweet" cols="50" rows="3" placeholder="今どうしてる？"></textarea>
-            <input type="submit" value="Tweet" class="Tweet_button">
+            <input type="button" value="Tweet" class="Tweet_button" onclick="msgpopup()"> <!-- type="submit" -->
         </form>
     </section>
 
@@ -87,7 +90,7 @@ $tweet = "";
             <option value="2014">2014</option>
             <option value="2015">2015</option>
             <option value="2016">2016</option>
-            <option value="2017">2016</option>
+            <option value="2017">2017</option>
             <option value="2018">2018</option>
         </select>
         <select name="season">
@@ -189,7 +192,7 @@ $tweet = "";
                     }elseif($relative_time >= (60 * 60) && $relative_time < (60 * 60 * 24)){
                         echo floor($relative_time / (60 * 60)) . "時間前";
                     }elseif($relative_time >= (60 * 60 * 24)){
-                        echo date("n月j日",$tweet_time);
+                        echo date("Y/n/j G:i",$Tweet_time);
                     }
                     ?></li>
             </div>
