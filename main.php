@@ -45,6 +45,9 @@ $tweet = "";
    $(document).ready(function(){
       $(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
    });
+   function toggle(){
+       $('.toggle-box').slideToggle('slow');
+   }
    function msgpopup(){
        alert("現在ツイート機能を利用できません。");
    }
@@ -64,11 +67,24 @@ $tweet = "";
         </form>
     </section>
 
+    <section class="Trend">
+        <?php $Trend_responce = $connection -> get('trends/place', array('id' => '1110809'));
+        foreach($Trend_responce[0] -> {"trends"} as $Trend){
+            $Trend_word[] = $Trend->name;
+        }?>
+        <a href="javascript:toggle()"><h1>トレンドワード</h1>クリックして展開</a>
+        <ul class = toggle-box>
+        <?php for($i = 0;$i < count($Trend_word); $i++){
+            echo '<li>' . $Trend_word[$i] . '</li>';
+        }
+        echo '</ul>';
+        ?>
+    </section>
+
     <section class="list_option">
     <h1>リストタイムライン</h1>
     <?php
     $list = $connection -> get('lists/list');
-    
     $list_Count = sizeof($list);
     for($list_num = 0;$list_num < $list_Count;$list_num++){
         $list_ID[] = $list[$list_num]->{"id"};

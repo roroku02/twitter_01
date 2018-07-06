@@ -105,6 +105,11 @@ body {
     background-position: center;
 }
 
+.Trend .toggle-box {
+    display: none;
+    border: 1px solid #000;
+}
+
 .option #search_button {
     display: flex;
     flex-wrap: wrap;
