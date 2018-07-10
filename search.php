@@ -17,6 +17,8 @@
         }elseif($_GET['option'] == "rt"){
             $RT_sort = TRUE;
             $tweet_sort = "recent";
+        }else{
+            $tweet_sort = "recent";
         }
     }else{
         $tweet_sort = "recent";
@@ -82,9 +84,9 @@
    ?>
    <h2>並び替え</h2>
    <form action="search.php" method="get">
-       <input type="radio" name="option" value="recent" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $RT_sort == FALSE) echo "selected"; ?>>新しい順</input>
-       <input type="radio" name="option" value="popular" onchange="this.form.submit()" <?php if($tweet_sort == "popular") echo "selected"; ?>>人気度順</input> 
-       <input type="radio" name="option" value="rt" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $RT_sort == TRUE) echo "selected"; ?>>RT順</input> 
+       <input type="radio" name="option" value="recent" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $RT_sort == FALSE) echo "checked"; ?>>新しい順</input>
+       <input type="radio" name="option" value="popular" onchange="this.form.submit()" <?php if($tweet_sort == "popular") echo "checked"; ?>>人気度順</input> 
+       <input type="radio" name="option" value="rt" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $RT_sort == TRUE) echo "checked"; ?>>RT順</input> 
     </form>
     <?php
     $count = sizeof($search_tweet->{"statuses"});
