@@ -105,6 +105,11 @@ body {
     background-position: center;
 }
 
+.Trend .toggle-button{
+    color: inherit;
+    text-decoration: none;
+}
+
 .Trend .toggle-box {
     display: none;
     border: 1px solid #000;

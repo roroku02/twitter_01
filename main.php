@@ -72,7 +72,7 @@ $tweet = "";
         foreach($Trend_responce[0] -> {"trends"} as $Trend){
             $Trend_word[] = $Trend->name;
         }?>
-        <a href="javascript:toggle()"><h1>トレンドワード</h1>クリックして展開</a>
+        <a href="javascript:toggle()" class="toggle-button"><h1>トレンドワード<i class="fas fa-chevron-circle-down"></i></h1></a>
         <ul class = toggle-box>
         <?php for($i = 0;$i < count($Trend_word); $i++){
             echo '<li>' . $Trend_word[$i] . '</li>';
