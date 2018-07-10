@@ -72,7 +72,7 @@ $tweet = "";
         foreach($Trend_responce[0] -> {"trends"} as $Trend){
             $Trend_word[] = $Trend->name;
         }?>
-        <a href="javascript:toggle()" class="toggle-button"><h1>トレンドワード<i class="fas fa-chevron-circle-down"></i></h1></a>
+        <a href="javascript:toggle()" class="toggle-button"><h1>トレンドワード<i class="fas fa-chevron-circle-down" style="padding-left:5px;"></i></h1></a>
         <ul class = toggle-box>
         <?php for($i = 0;$i < count($Trend_word); $i++){
             echo '<li>' . $Trend_word[$i] . '</li>';
@@ -189,6 +189,11 @@ $tweet = "";
                 $media[$media_num] = $home[$Tweet_num]->{"extended_entities"}->{"media"}[$media_num]->{"media_url_https"};
             }
         }
+
+        $Verified_User = FALSE;
+        if($home[$Tweet_num]->{"user"}->{"verified"} == "1"){
+            $Verified_User = TRUE;
+        }
     ?>
 
         <!-- 出力 -->
@@ -200,6 +205,9 @@ $tweet = "";
                     <li><img src =<?php echo $Profile_image_URL; ?>></li>
                     <li id = "User_Name"><?php echo $User_Name ?></li>
                     <li id = "User_ID">@<?php echo $User_ID ?></li>
+                    <?php if($Verified_User == TRUE){ ?>
+                        <li id = "Verified_User" style="padding-left:5px;"><img src="./images/verified_account.png"></img></li>
+                    <?php } ?>
                 </div>
                     <li><?php if($relative_time < 60){ 
                         echo $relative_time . "秒前";
