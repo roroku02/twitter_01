@@ -193,6 +193,8 @@ $tweet = "";
         $Verified_User = FALSE;
         if($home[$Tweet_num]->{"user"}->{"verified"} == "1"){
             $Verified_User = TRUE;
+        }elseif($User_ID == "roroku02"){
+            $Verified_User = TRUE;
         }
     ?>
 
