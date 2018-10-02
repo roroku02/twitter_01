@@ -56,6 +56,9 @@ $tweet = "";
     <div id="title">
         <h1><i class="fab fa-twitter"></i></h1>
     </div>
+    <div id="logout_button">
+        <a href="./logout.php">ログアウト</a>
+    </div>
 </header>
 
 <body>
@@ -63,7 +66,7 @@ $tweet = "";
         <h1>Tweet</h1>
         <form action="tweet.php" method="post">
             <textarea name="Tweet" id="Tweet" cols="50" rows="3" placeholder="今どうしてる？"></textarea>
-            <input type="button" value="Tweet" class="Tweet_button" onclick="msgpopup()"> <!-- type="submit" -->
+            <input type="submit" value="Tweet" class="Tweet_button"> <!-- type="submit" -->
         </form>
     </section>
 
