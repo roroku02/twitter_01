@@ -10,18 +10,16 @@
 
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    $upload_media1 = '/images/test.png';
+    $upload_media1 = './images/test.PNG';
+    echo "<img src= $upload_media1 >";
     $upload_media2 = [];
     $upload_media3 = [];
     $upload_media4 = [];
-    $media_ids=[];
-    if(isset($upload_media1)){
-        $parameter1 = $connection->upload('media/upload',array('media' => '/images/test.png'));
-        $media_ids = $parameter1 -> {"media_id_string"};
-    }
+    $parameter1 = $connection->upload('media/upload',['media' => './images/test.png']);
+    $media_ids = $parameter1 -> {"media_id_string"};
+    var_dump($parameter1);
     echo $media_ids;
 
-    //$Tweet = $_POST['Tweet'];
     $Tweet = $_POST['Tweet'];
     $connection->post('statuses/update', ['status' => $Tweet,'media_ids' => $media_ids]);
     
