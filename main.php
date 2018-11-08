@@ -66,7 +66,7 @@ $tweet = "";
         <h1>Tweet</h1>
         <form action="tweet.php" method="post" enctype="multipart/form-data">
             <textarea name="Tweet" id="Tweet" cols="50" rows="3" placeholder="今どうしてる？"></textarea>
-            <input type="file" name="upload_image" id="upload_image[]" multiple accept="image/*">
+            <input type="file" name="upload_image[]" id="upload_image[]" multiple accept="image/*">
             <input type="submit" value="Tweet" class="Tweet_button"> <!-- type="submit" -->
         </form>
     </section>

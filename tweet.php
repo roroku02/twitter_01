@@ -2,6 +2,9 @@
     session_start();
     require_once('./twitteroauth/autoload.php');
     define("UPLOAD_IMAGE", "images/upload/");
+    
+    ini_set('display_errors', "On");
+    ini_set('error_reporting', E_ALL);
 
     use Abraham\TwitterOAuth\TwitterOAuth;
 
@@ -11,26 +14,36 @@
 
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    //$upload_media1 = './images/test.PNG';
-    //画像の拡張子を取得
-    $file_ext = substr($_FILES['upload_image']['name'],strrpos($_FILES['upload_image']['name'],'.') + 1);
-    //echo $file_ext;
-    //画像をimage＋拡張子に名前変更
-    move_uploaded_file($_FILES['upload_image']['tmp_name'],UPLOAD_IMAGE . 'image' . '.' . $file_ext);
-    $upload_media1 = UPLOAD_IMAGE . 'image.' . $file_ext;
-    //var_dump($upload_media1);
-    echo $upload_media1;
-    echo "<img src= $upload_media1 >";
-    $upload_media2 = [];
-    $upload_media3 = [];
-    $upload_media4 = [];
-    $parameter1 = $connection->upload('media/upload',['media' => $upload_media1]);
-    $media_ids = $parameter1 -> {"media_id_string"};
-    var_dump($parameter1);
-    echo $media_ids;
+    $Tweet = htmlspecialchars($_POST['Tweet']);
 
-    $Tweet = $_POST['Tweet'];
-    $connection->post('statuses/update', ['status' => $Tweet,'media_ids' => $media_ids]);
+    print_r($_FILES['upload_image']);
+    //$upload_media1 = './images/test.PNG';
+    if(($_FILES['upload_image']['size'][0]) != 0){
+        for($i = 0; $i < count($_FILES['upload_image']['name']); $i++){
+            //var_dump($_FILES['upload_image']['name'][$i]);
+            //画像の拡張子を取得
+            $file_ext = substr($_FILES['upload_image']['name'][$i],strrpos($_FILES['upload_image']['name'][$i],'.') + 1);
+            //画像をimage＋拡張子に名前変更
+            move_uploaded_file($_FILES['upload_image']['tmp_name'][$i],UPLOAD_IMAGE . 'image' . $i . '.' . $file_ext);
+            $upload_media[$i] = UPLOAD_IMAGE . 'image' . $i . '.' . $file_ext;
+        //var_dump($upload_media1);
+            $parameter[$i] = $connection->upload('media/upload',['media' => $upload_media[$i]]);
+            $media_ids[$i] = $parameter[$i] -> {"media_id_string"};
+            var_dump($parameter[$i]);
+        //echo $media_ids;
+        }
+
+        $parameters = [
+            'status' => $Tweet,
+            'media_ids' => implode(',', $media_ids)
+        ];
+    }else{
+        $parameters = [
+            'status' => $Tweet
+        ];
+    }
+
+    $connection->post('statuses/update', $parameters);
     
 ?>
 <a href="./main.php">戻る</a>
