@@ -24,13 +24,13 @@
     $upload_media2 = [];
     $upload_media3 = [];
     $upload_media4 = [];
-    //$parameter1 = $connection->upload('media/upload',['media' => $upload_media1]);
-    //$media_ids = $parameter1 -> {"media_id_string"};
-    //var_dump($parameter1);
-    //echo $media_ids;
+    $parameter1 = $connection->upload('media/upload',['media' => $upload_media1]);
+    $media_ids = $parameter1 -> {"media_id_string"};
+    var_dump($parameter1);
+    echo $media_ids;
 
     $Tweet = $_POST['Tweet'];
-    //$connection->post('statuses/update', ['status' => $Tweet,'media_ids' => $media_ids]);
+    $connection->post('statuses/update', ['status' => $Tweet,'media_ids' => $media_ids]);
     
 ?>
 <a href="./main.php">戻る</a>
