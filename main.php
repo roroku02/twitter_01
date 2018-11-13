@@ -74,15 +74,16 @@ $tweet = "";
     <section class="Trend">
         <?php $Trend_responce = $connection -> get('trends/place', array('id' => '1110809'));
         foreach($Trend_responce[0] -> {"trends"} as $Trend){
-            $Trend_word[] = $Trend->name;
-        }?>
+            $Trend_words[] = $Trend->name;
+        };?>
         <a href="javascript:toggle()" class="toggle-button"><h1>トレンドワード<i class="fas fa-chevron-circle-down" style="padding-left:5px;"></i></h1></a>
         <ul class = toggle-box>
-        <?php for($i = 0;$i < count($Trend_word); $i++){
-            echo '<li>' . $Trend_word[$i] . '</li>';
-        }
-        echo '</ul>';
-        ?>
+            <?php
+            foreach($Trend_words as $Trend_word){
+                echo '<a href="http://localhost/twitter_01/search.php?search_word='.$Trend_word.'">'.$Trend_word.'</a>';
+                echo '<br />';
+            };?>
+        </ul>
     </section>
 
     <section class="list_option">
@@ -187,10 +188,16 @@ $tweet = "";
         $media_TRUE = FALSE;
         if(isset ($home[$Tweet_num]->{"entities"}->{"media"})){
             $media_TRUE = TRUE;
-            $media_Count = sizeof($home[$Tweet_num]->{"extended_entities"}->{"media"});
+            $media_Count = sizeof($home[$Tweet_num]->{"entities"}->{"media"});
             $media = [];
             for($media_num = 0;$media_num < $media_Count;$media_num++) {
-                $media[$media_num] = $home[$Tweet_num]->{"extended_entities"}->{"media"}[$media_num]->{"media_url_https"};
+                $media[$media_num] = $home[$Tweet_num]->{"entities"}->{"media"}[$media_num]->{"media_url_https"};
+            }
+        }elseif(isset($home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"media"})){
+            $media_TRUE = TRUE;
+            $media =[];
+            for($media_num = 0;$media_num < sizeof($home[$media_num]->{"retweeted_status"}->{"entities"}->{"media"});$media_num++){
+                $media[$media_num] = $home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"media"}->{"media_url_https"};
             }
         }
 
