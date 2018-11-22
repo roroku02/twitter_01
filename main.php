@@ -188,22 +188,22 @@ $tweet = "";
         $media_TRUE = FALSE;
         if(isset ($home[$Tweet_num]->{"entities"}->{"media"})){
             $media_TRUE = TRUE;
-            $media_Count = sizeof($home[$Tweet_num]->{"entities"}->{"media"});
+            $media_Count = sizeof($home[$Tweet_num]->{"extended_entities"}->{"media"});
             $media = [];
             for($media_num = 0;$media_num < $media_Count;$media_num++) {
-                $media[$media_num] = $home[$Tweet_num]->{"entities"}->{"media"}[$media_num]->{"media_url_https"};
+                $media[$media_num] = $home[$Tweet_num]->{"extended_entities"}->{"media"}[$media_num]->{"media_url_https"};
             }
-        }elseif(isset($home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"media"})){
+        }elseif(isset($home[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"})){
             $media_TRUE = TRUE;
             $media = [];
-            $media_Count = count($home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"media"});
-            echo "media_num = $media_Count";
+            $media_Count = count($home[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"});
+            //echo "media_num = $media_Count";
             for($media_num = 0;$media_num < $media_Count;$media_num++){
             //foreach($home[$Tweet_num]->{"retweeted_status"}-{"entities"}->{"media"} as $media_array){
-                $media[$media_num] = $home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"media"}[$media_num]->{"media_url_https"};
+                $media[$media_num] = $home[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"}[$media_num]->{"media_url_https"};
                 //$media[] = $media_array[]->{"media_url_https"};
             }
-            echo "media array count = " . sizeof($media);
+            //echo "media array count = " . sizeof($media);
         }
 
         $Verified_User = FALSE;
@@ -239,8 +239,8 @@ $tweet = "";
                     ?></li>
             </div>
             <li><?php echo nl2br($Text); ?></li>
-            <?php if($media_TRUE == TRUE){ ?>
-                <li><?php for($media_num = 0;$media_num < sizeof($media);$media_num++) { ?>
+            <?php if($media_TRUE == TRUE){?>
+                <li><?php for($media_num = 0;$media_num < sizeof($media);$media_num++) {?>
                     <a href="<?php echo $media[$media_num]; ?>" class="img" data-lightbox="group<?php echo $Tweet_num; ?>" style="background-image: url(<?php echo $media[$media_num] .':small'; ?>);"></a><?php } ?></li>
                     <?php } ?>
             <div id = "RT_Counter">
