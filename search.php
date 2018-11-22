@@ -22,6 +22,7 @@
         }
     }else{
         $tweet_sort = "recent";
+        $_GET['search_word'] = htmlspecialchars($_GET['search_word'],ENT_QUOTES,'UTF-8');
         $_SESSION['search_word'] = $_GET['search_word'];
     }
 
