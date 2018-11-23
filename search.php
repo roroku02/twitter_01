@@ -11,11 +11,16 @@
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
     $RT_sort = FALSE;
+    $Fav_sort = FALSE;
+    $only_verify = FALSE;
     if(isset($_GET['option'])){
         if($_GET['option'] == "popular"){
             $tweet_sort = $_GET['option'];
         }elseif($_GET['option'] == "rt"){
             $RT_sort = TRUE;
+            $tweet_sort = "recent";
+        }elseif($_GET['option'] == 'fav'){
+            $Fav_sort = TRUE;
             $tweet_sort = "recent";
         }else{
             $tweet_sort = "recent";
@@ -26,14 +31,91 @@
         $_SESSION['search_word'] = $_GET['search_word'];
     }
 
-    $search_tweet = $connection -> get('search/tweets',array('q' => $_SESSION['search_word'] .' exclude:retweets','count' => 100,'tweet_mode' => 'extended', 'result_type' => $tweet_sort));
+    $max_id = NULL;
     $now_time = time();
+    $params = array(
+        'q' => $_SESSION['search_word'],
+        'exclude' => 'retweets',
+        'count' => 100,
+        'tweet_mode' => 'extended',
+        'result_type' => $tweet_sort
+    );
 
-    if($RT_sort == TRUE){
-        foreach($search_tweet->{"statuses"} as $key => $value){
-            $sort[$key] = $value->retweet_count;
+    ob_implicit_flush(true);
+    while(@ob_end_clean());
+
+    if($RT_sort == TRUE){       //RTソート
+        //echo "<div id = 'loading' style='position:fixed;top:50%;left:50%;'>";
+        //echo "<img src= './images/loading1.gif'>";
+        //echo "<div id = 'percent'>";
+        for($i = 0;$i < 10; $i++){
+            echo "<script>document.getElementById( 'percent' ).innerHTML = ''</script>";
+            echo ($i + 1) * 10 . "%完了<br/>";   
+            ${'search_tweets' . $i} = $connection -> get('search/tweets',$params);
+            unset(${'search_tweets' . $i} -> {'search_metadata'});
+            ${'search_tweet' . $i} = ${'search_tweets' . $i} -> {'statuses'};
+            $max_id = end(${'search_tweets' .$i} -> {'statuses'}) -> {'id_str'};
+            echo "max_id = $max_id";
+            echo '<br />';
+            //print_r(${'search_tweets' . $i});
+            if(isset($max_id)){
+                if(PHP_INT_SIZE == 4)
+                    $params['max_id'] = $max_id;
+                elseif(PHP_INT_SIZE == 8)
+                    $params['max_id'] = $max_id - 1;
+            }
+            //echo "$i : " . sizeof(${'search_tweet' . $i}) . "<br>";
         }
-        array_multisort($sort,SORT_DESC,$search_tweet->{"statuses"});
+        //echo "</div>";
+        $search_tweet = array_merge_recursive($search_tweet0,$search_tweet1,$search_tweet2,$search_tweet3,$search_tweet4,$search_tweet5,$search_tweet6,$search_tweet7,$search_tweet8,$search_tweet9);
+        //echo "</div>";
+        
+
+        /*///////////////
+        ↓バグ修正必須↓
+        *///////////////
+        $count_t = sizeof($search_tweet);
+        echo "$count_t 件ツイート取得";
+        foreach($search_tweet as $key => $value){
+            $sort[$key] = $value['retweet_count'];
+            echo $sort[$key] . "<br />";
+        }
+        array_multisort($sort,SORT_DESC,$search_tweet);
+    }elseif($Fav_sort == TRUE){     //favoriteソート    //修正必要あり
+        if(isset($search_tweet0)){
+            foreach($search_tweet as $key => $value){
+                $sort[$key] = $value['favorite_count'];
+            }
+            array_multisort($sort,SORT_DESC,$seach_tweet);
+        }else{
+        echo "<div id = 'loading' style='position:fixed;top:50%;left:50%;'>";
+        echo "<img src= './images/loading1.gif'>";
+        echo "<div id = 'percent'>";
+        for($i = 0;$i < 10; $i++){
+            echo "<script>document.getElementById( 'percent' ).innerHTML = ''</script>";
+            echo ($i + 1) * 10 . "%完了<br/>";        
+            //print_r($params);
+            ${'search_tweets' . $i} = $connection -> get('search/tweets',$params);
+            unset(${'search_tweets' . $i}['search_metadata']);
+            ${'search_tweet' . $i} = ${'search_tweets' . $i}['statuses'];
+            $max_id = end(${'search_tweets' .$i}['statuses'])['id_str'];
+            if(isset($max_id)){
+                //echo "<br>------<br>next max_id :" . $max_id . "<br>-------<br>";
+                $params['max_id'] = $max_id;
+            }
+            //echo "$i : " . sizeof(${'search_tweet' . $i}) . "<br>";
+        }
+        echo "</div>";
+        $search_tweet = array_merge_recursive($search_tweet0,$search_tweet1,$search_tweet2,$search_tweet3,$search_tweet4,$search_tweet5,$search_tweet6,$search_tweet7,$search_tweet8,$search_tweet9);
+        echo "</div>";
+        
+        foreach($search_tweet as $key => $value){
+            $sort[$key] = $value['favorite_count'];
+        }
+        array_multisort($sort,SORT_DESC,$search_tweet);
+        }
+    }else{
+    $search_tweet = $connection -> get('search/tweets',$parms);
     }
 ?>
 
@@ -84,10 +166,15 @@
 
    ?>
    <h2>並び替え</h2>
-   <form action="search.php" method="get">
-       <input type="radio" name="option" value="recent" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $RT_sort == FALSE) echo "checked"; ?>>新しい順</input>
-       <input type="radio" name="option" value="popular" onchange="this.form.submit()" <?php if($tweet_sort == "popular") echo "checked"; ?>>人気度順</input> 
-       <input type="radio" name="option" value="rt" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $RT_sort == TRUE) echo "checked"; ?>>RT順</input> 
+   <form action="search.php" method="get" class="sort">
+       <input type="radio" name="option" value="recent" id="select1" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $RT_sort == FALSE && $Fav_sort == FALSE) echo "checked"; ?>>
+       <label for="select1">新しい順</label>
+       <input type="radio" name="option" value="rt" id="select3" onclick="load()" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $RT_sort == TRUE) echo "checked"; ?>>
+       <label for="select3">RT順</label> 
+       <input type="radio" name="option" value="fav" id="select4" onclick="load()" onchange="this.form.submit()" <?php if($tweet_sort == "recent" && $Fav_sort == TRUE) echo "checked"; ?>>
+       <label for="select4">いいね順</label>
+       <input type="radio" name="option" value="popular" id="select2" onchange="this.form.submit()" <?php if($only_verify == TRUE) echo "checked"; ?>>
+       <label for="select2">認証済みユーザのみ（新しい順）</label>
     </form>
     <?php
     $count = sizeof($search_tweet->{"statuses"});
