@@ -10,9 +10,12 @@
     
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
+    //初期化
     $RT_sort = FALSE;
     $Fav_sort = FALSE;
     $only_verify = FALSE;
+    
+    //ツイート並び替えボタンの取得
     if(isset($_GET['option'])){
         if($_GET['option'] == "popular"){
             $tweet_sort = $_GET['option'];
@@ -27,13 +30,13 @@
         }
     }else{
         $tweet_sort = "recent";
-        $_GET['search_word'] = htmlspecialchars($_GET['search_word'],ENT_QUOTES,'UTF-8');
+        $_GET['search_word'] = htmlspecialchars($_GET['search_word'],ENT_QUOTES,'UTF-8');       //検索文字列エスケープ処理
         $_SESSION['search_word'] = $_GET['search_word'];
     }
 
-    $max_id = NULL;
-    $now_time = time();
-    $params = array(
+    $max_id = NULL;     //初期化
+    $now_time = time(); //現在時刻取得
+    $params = array(    //検索パラメータ
         'q' => $_SESSION['search_word'],
         'exclude' => 'retweets',
         'count' => 100,
@@ -41,6 +44,7 @@
         'result_type' => $tweet_sort
     );
 
+    //順次出力処理
     ob_implicit_flush(true);
     while(@ob_end_clean());
 
@@ -71,9 +75,9 @@
         //echo "</div>";
         
 
-        /*///////////////
+        /*****************
         ↓バグ修正必須↓
-        *///////////////
+        ******************/
         $count_t = sizeof($search_tweet);
         echo "$count_t 件ツイート取得";
         foreach($search_tweet as $key => $value){
@@ -88,6 +92,7 @@
             }
             array_multisort($sort,SORT_DESC,$seach_tweet);
         }else{
+        //ロード割合表示
         echo "<div id = 'loading' style='position:fixed;top:50%;left:50%;'>";
         echo "<img src= './images/loading1.gif'>";
         echo "<div id = 'percent'>";
@@ -99,20 +104,22 @@
             unset(${'search_tweets' . $i}['search_metadata']);
             ${'search_tweet' . $i} = ${'search_tweets' . $i}['statuses'];
             $max_id = end(${'search_tweets' .$i}['statuses'])['id_str'];
-            if(isset($max_id)){
+            if(isset($max_id)){     //ページング処理
                 //echo "<br>------<br>next max_id :" . $max_id . "<br>-------<br>";
                 $params['max_id'] = $max_id;
             }
             //echo "$i : " . sizeof(${'search_tweet' . $i}) . "<br>";
         }
         echo "</div>";
+        
+        //連想配列の結合
         $search_tweet = array_merge_recursive($search_tweet0,$search_tweet1,$search_tweet2,$search_tweet3,$search_tweet4,$search_tweet5,$search_tweet6,$search_tweet7,$search_tweet8,$search_tweet9);
         echo "</div>";
         
         foreach($search_tweet as $key => $value){
             $sort[$key] = $value['favorite_count'];
         }
-        array_multisort($sort,SORT_DESC,$search_tweet);
+        array_multisort($sort,SORT_DESC,$search_tweet);     //ソート処理
         }
     }else{
     $search_tweet = $connection -> get('search/tweets',$parms);

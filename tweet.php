@@ -14,7 +14,7 @@
 
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    $Tweet = htmlspecialchars($_POST['Tweet']);
+    $Tweet = htmlspecialchars($_POST['Tweet']);     //ツイートエスケープ処理
 
     print_r($_FILES['upload_image']);
     //$upload_media1 = './images/test.PNG';
