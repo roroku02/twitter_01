@@ -62,6 +62,7 @@ $tweet = "";
 </header>
 
 <body>
+    <!-- Tweetフォーム -->
     <section class="Tweet">
         <h1>Tweet</h1>
         <form action="tweet.php" method="post" enctype="multipart/form-data">
@@ -71,6 +72,7 @@ $tweet = "";
         </form>
     </section>
 
+   <!-- トレンド表示 -->
     <section class="Trend">
         <?php $Trend_responce = $connection -> get('trends/place', array('id' => '1110809'));
         foreach($Trend_responce[0] -> {"trends"} as $Trend){
@@ -86,17 +88,19 @@ $tweet = "";
         </ul>
     </section>
 
+    <!-- リスト選択 -->
     <section class="list_option">
     <h1>リストタイムライン</h1>
     <?php
-    $list = $connection -> get('lists/list');
+    $list = $connection -> get('lists/list');       //リスト一覧を取得
     $list_Count = sizeof($list);
-    for($list_num = 0;$list_num < $list_Count;$list_num++){
+    for($list_num = 0;$list_num < $list_Count;$list_num++){     //リストIDとリスト名の取得
         $list_ID[] = $list[$list_num]->{"id"};
         $list_name[] = $list[$list_num]->{"slug"};
     }
-    $list_lists = array($list_ID,$list_name);
+    $list_lists = array($list_ID,$list_name);       //リストIDと名前を配列に入力
     ?>
+    <!-- リスト選択フォーム -->
     <form action="list.php" method="get">
     <select name="list_id" onchange="this.form.submit()">
         <option selected>表示するリストを選択してください</option>
@@ -105,6 +109,8 @@ $tweet = "";
         <?php } ?>
     </select>
     </form>
+
+    <!-- アニメハッシュタグ検索フォーム -->
     <h1>アニメタグ検索</h1>
     <form action="anime.php" method="get">
         <select name="year">
@@ -124,17 +130,20 @@ $tweet = "";
     </form>
     </section>
     
+    <!-- タイムライン -->
     <section class="TimeLine">
     <h1>Twitter HOME TIMELINE</h1>
     
     <?php
-    $home = $connection->get('statuses/home_timeline',array('count'=>50,'tweet_mode' => 'extended'));
-    $now_time = time();
+    $home = $connection->get('statuses/home_timeline',array('count'=>50,'tweet_mode' => 'extended'));       //タイムライン取得
+    $now_time = time();     //相対時間表示のために現在時刻の取得
     
     //*******debug mode*********
     //echo "debug mode<br><br>"; print_r($home);
     //***************************
 
+
+    //ツイート全体処理（変数への入力）
     $count = sizeof($home);
     for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
         $TweetID = $home[$Tweet_num]->{"id"};
@@ -149,7 +158,7 @@ $tweet = "";
         $Favorite_Count = $home[$Tweet_num]->{"favorite_count"};
         $Retweet_TRUE = FALSE;
 
-        //RT処理
+        //RT表示処理
         if(isset($home[$Tweet_num]->{"retweeted_status"})){
             $Retweet_TRUE = TRUE;
             $Date = $home[$Tweet_num]->{"retweeted_status"}->{"created_at"};
@@ -164,7 +173,7 @@ $tweet = "";
                 $home[$Tweet_num]->{"entities"}->{"hashtags"} = $home[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
         }
 
-        //ハッシュタグ処理
+        //ハッシュタグリンク化処理
         $home[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($home[$Tweet_num]->{"entities"}->{"hashtags"});
         foreach($home[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
             if(isset($hashtags)){
@@ -177,14 +186,14 @@ $tweet = "";
             }
         }
 
-        //URL処理
+        //URLリンク化処理
         if(isset($home[$Tweet_num]->{"entities"}->{"urls"})){
             foreach($home[$Tweet_num]->{"entities"}->{"urls"} as $urls){
                 $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" class= "iframe">'.$urls->display_url.'</a>',$Text);
             }
         }
 
-        //画像処理
+        //画像表示処理
         $media_TRUE = FALSE;
         if(isset ($home[$Tweet_num]->{"entities"}->{"media"})){
             $media_TRUE = TRUE;
@@ -206,6 +215,7 @@ $tweet = "";
             //echo "media array count = " . sizeof($media);
         }
 
+        //承認済みユーザの取得
         $Verified_User = FALSE;
         if($home[$Tweet_num]->{"user"}->{"verified"} == "1"){
             $Verified_User = TRUE;
@@ -227,6 +237,7 @@ $tweet = "";
                         <li id = "Verified_User" style="padding-left:5px;"><img src="./images/verified_account.png"></img></li>
                     <?php } ?>
                 </div>
+                    <!-- 相対時間表示 -->
                     <li><?php if($relative_time < 60){ 
                         echo $relative_time . "秒前";
                     }elseif($relative_time >= 60 && $relative_time < (60 * 60)){
@@ -253,6 +264,7 @@ $tweet = "";
     ?>
     </section>
 
+    <!-- 検索フォーム -->
     <section class="search">
         <h1>Search<a name = "search"></a></h1>
         <form action="search.php" method="get">
