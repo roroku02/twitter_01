@@ -16,7 +16,7 @@
 
     $Tweet = htmlspecialchars($_POST['Tweet']);
 
-    print_r($_FILES['upload_image']);
+    //print_r($_FILES['upload_image']);
     //$upload_media1 = './images/test.PNG';
     if(($_FILES['upload_image']['size'][0]) != 0){
         for($i = 0; $i < count($_FILES['upload_image']['name']); $i++){
@@ -29,7 +29,7 @@
         //var_dump($upload_media1);
             $parameter[$i] = $connection->upload('media/upload',['media' => $upload_media[$i]]);
             $media_ids[$i] = $parameter[$i] -> {"media_id_string"};
-            var_dump($parameter[$i]);
+            //var_dump($parameter[$i]);
         //echo $media_ids;
         }
 
@@ -44,6 +44,5 @@
     }
 
     $connection->post('statuses/update', $parameters);
-    
+    header('location: ./main.php');
 ?>
-<a href="./main.php">戻る</a>
