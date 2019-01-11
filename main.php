@@ -31,6 +31,7 @@ $tweet = "";
     <script type="text/javascript" src="js/jquery.colorbox-ja.js"></script>
     <script type="text/javascript" src="js/lightbox.js"></script>
     <script type="text/javascript" src="js/pulltorefresh.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 </head>
 <script>
     lightbox.option ({
@@ -42,15 +43,6 @@ $tweet = "";
         mainElement: 'body',
         onRefresh: function(){ window.location.reload(); }
     });
-   $(document).ready(function(){
-      $(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
-   });
-   function toggle(){
-       $('.toggle-box').slideToggle('slow');
-   }
-   function msgpopup(){
-       alert("現在ツイート機能を利用できません。");
-   }
 </script>
 <header>
     <div id="title">
@@ -255,10 +247,10 @@ $tweet = "";
                 <li><?php for($media_num = 0;$media_num < sizeof($media);$media_num++) {?>
                     <a href="<?php echo $media[$media_num]; ?>" class="img" data-lightbox="group<?php echo $Tweet_num; ?>" style="background-image: url(<?php echo $media[$media_num] .':small'; ?>);"></a><?php } ?></li>
                     <?php } ?>
-            <div id = "RT_Counter">
-                <li><i class="fas fa-retweet fa-fw" style="color: green;"></i><?php echo $Retweet_Count; ?></li>
-                <li><i class="fas fa-heart" style="color: red;"></i> <?php echo $Favorite_Count; ?></li>
-            </div>
+            <form action="rtfav.php" id = "RT_Counter" method="post" onsubmit="return check()">
+                <li><button type="submit" name="rt" value="<?php echo $TweetID ?>"><i class="fas fa-retweet fa-fw" style="color: green;"></i></button><?php echo $Retweet_Count; ?></li>
+                <li><button type="submit" name="fav" value="<?php echo $TweetID ?>"><i class="fas fa-heart" name="fav" style="color: red;"></i></button><?php echo $Favorite_Count; ?></li>
+            </form>
         </ul>
     <?php
         }
