@@ -64,7 +64,7 @@ $tweet = "";
         </form>
     </section>
 
-   <!-- トレンド表示 -->
+    <!-- トレンド表示 -->
     <section class="Trend">
         <?php $Trend_responce = $connection -> get('trends/place', array('id' => '1110809'));
         foreach($Trend_responce[0] -> {"trends"} as $Trend){
