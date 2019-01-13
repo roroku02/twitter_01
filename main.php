@@ -46,10 +46,10 @@ $tweet = "";
 </script>
 <header>
     <div id="title">
-        <h1><i class="fab fa-twitter"></i></h1>
+        <i class="fab fa-twitter"></i>
     </div>
     <div id="logout_button">
-        <a href="./logout.php">ログアウト</a>
+        <a href="./logout.php"><i class="fas fa-sign-out-alt"></i>ログアウト</a>
     </div>
 </header>
 
