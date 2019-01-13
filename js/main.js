@@ -8,6 +8,20 @@ function msgpopup() {
     alert("現在ツイート機能を利用できません。");
 }
 
+function init() {
+    $(document).on('click', function (event) {
+        if (!$(event.target).closest('.popup_TweetForm').length && !$(event.target).closest('.create_Tweet').length) {
+            $('.popup_TweetForm').fadeOut();
+        } else if ($(event.target).closest('.create_Tweet').length) {
+            if ($('.popup_TweetForm').is(':hidden')) {
+                $('.popup_TweetForm').fadeIn();
+            } else {
+                $('.popup_TweetForm').fadeOut();
+            }
+        }
+    });
+}
+
 /**
  * （TODO）リツイートなのかふぁぼなのかを判別
  * それに応じ確認メッセージを変更する

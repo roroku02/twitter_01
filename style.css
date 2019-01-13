@@ -40,12 +40,46 @@ body {
     max-width: 900px;
 }
 
+.popup_TweetForm {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: lightgray;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 50px;
+    box-shadow: 0px 0px 50px 0px black;
+}
+
+.popup_TweetForm textarea {
+    width: 80%;
+}
+
+.create_Tweet {
+    right: 10%;
+    position: fixed;
+    display: block;
+    bottom: 10%;
+    border: 1px solid #1DA1F2;
+    border-radius: 50%;
+    line-height: 80px;
+    width: 80px;
+    font-size: 40px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: #1DA1F2;
+    cursor: pointer;
+}
+
 .Tweet_button {
     width: 120px;
     height: 30px;
     border-radius: 10px;
     border: 1px darkcyan dashed;
-    background-color: #00aced;
+    background-color: #1DA1F2;
     font-size: 20px;
 }
 

@@ -53,7 +53,17 @@ $tweet = "";
     </div>
 </header>
 
-<body>
+<body onload="init()">
+    <div class="create_Tweet">
+        <i class="fas fa-edit"></i>
+    </div>
+    <div class="popup_TweetForm">
+        <form action="tweet.php" method="post" enctype="multipart/form-data">
+                <textarea name="Tweet" id="Tweet" cols="50" rows="3" placeholder="今どうしてる？"></textarea>
+                <input type="file" name="upload_image[]" id="upload_image[]" multiple accept="image/*">
+                <input type="submit" value="Tweet" class="Tweet_button"> <!-- type="submit" -->
+        </form>
+    </div>
     <!-- Tweetフォーム -->
     <section class="Tweet">
         <h1>Tweet</h1>
