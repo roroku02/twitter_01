@@ -40,15 +40,9 @@ header #title {
 
 #logout_button a {
     text-decoration: none;
-    color: #fff;
-    
+    color: #fff;   
 }
 
-body {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    max-width: 900px;
-}
 
 .popup_TweetForm {
     display: none;
@@ -104,6 +98,10 @@ body {
     }
 }
 
+.Tweet form {
+    margin: 30px;
+}
+
 .Tweet_button {
     width: 120px;
     height: 30px;
@@ -119,7 +117,7 @@ body {
 
 .TimeLine ul, .search ul{
     border-bottom: 1px solid rgb(165, 165, 165);
-    width: auto;
+
     padding: 10px;
     list-style-type: none;
 }
@@ -212,13 +210,50 @@ body {
     }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
     body {
-        max-width: 900px;
+        /* max-width: 900px;
+        margin-left: auto;
+        margin-right: auto; **/
         margin-top: 50px;
         margin-bottom: 50px;
-        margin-left: auto;
-        margin-right: auto;
+    }
+    .main {
+        display: flex;
+        flex-wrap: wrap;
+        min-width: 768px;
+    }
+    .Tweet {
+        flex: 1 1 1500px;
+    }
+    .Tweet form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .Trend {
+        flex: 1;
+        height: 200px;
+        position: sticky;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-bottom: 50px;
+        top: 50px;
+        z-index: 1;
+    }
+    .TimeLine {
+        flex: 3;
+    }
+    .search {
+        flex: 1;
+        height: 200px;
+        position: sticky;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-bottom: 50px;
+        top: 50px;
+        z-index: 1;
     }
 }
 
