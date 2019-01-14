@@ -49,9 +49,9 @@
     while(@ob_end_clean());
 
     if($RT_sort == TRUE){       //RTソート
-        //echo "<div id = 'loading' style='position:fixed;top:50%;left:50%;'>";
-        //echo "<img src= './images/loading1.gif'>";
-        //echo "<div id = 'percent'>";
+        echo "<div id = 'loading' style='position:fixed;top:50%;left:50%;'>";
+        echo "<img src= './images/loading.svg'>";
+        echo "<div id = 'percent'>";
         for($i = 0;$i < 10; $i++){
             echo "<script>document.getElementById( 'percent' ).innerHTML = ''</script>";
             echo ($i + 1) * 10 . "%完了<br/>";   
@@ -70,19 +70,13 @@
             }
             //echo "$i : " . sizeof(${'search_tweet' . $i}) . "<br>";
         }
-        //echo "</div>";
+        echo "</div>";
         $search_tweet = array_merge_recursive($search_tweet0,$search_tweet1,$search_tweet2,$search_tweet3,$search_tweet4,$search_tweet5,$search_tweet6,$search_tweet7,$search_tweet8,$search_tweet9);
-        //echo "</div>";
-        
-
-        /*****************
-        ↓バグ修正必須↓
-        ******************/
+        echo "</div>";
         $count_t = sizeof($search_tweet);
         echo "$count_t 件ツイート取得";
         foreach($search_tweet as $key => $value){
-            $sort[$key] = $value['retweet_count'];
-            echo $sort[$key] . "<br />";
+            $sort[$key] = $value -> {'retweet_count'};
         }
         array_multisort($sort,SORT_DESC,$search_tweet);
     }elseif($Fav_sort == TRUE){     //favoriteソート    //修正必要あり
@@ -90,23 +84,25 @@
             foreach($search_tweet as $key => $value){
                 $sort[$key] = $value['favorite_count'];
             }
-            array_multisort($sort,SORT_DESC,$seach_tweet);
+        array_multisort($sort,SORT_DESC,$seach_tweet);
         }else{
         //ロード割合表示
         echo "<div id = 'loading' style='position:fixed;top:50%;left:50%;'>";
-        echo "<img src= './images/loading1.gif'>";
+        echo "<img src= './images/loading.svg'>";
         echo "<div id = 'percent'>";
         for($i = 0;$i < 10; $i++){
             echo "<script>document.getElementById( 'percent' ).innerHTML = ''</script>";
             echo ($i + 1) * 10 . "%完了<br/>";        
             //print_r($params);
             ${'search_tweets' . $i} = $connection -> get('search/tweets',$params);
-            unset(${'search_tweets' . $i}['search_metadata']);
-            ${'search_tweet' . $i} = ${'search_tweets' . $i}['statuses'];
-            $max_id = end(${'search_tweets' .$i}['statuses'])['id_str'];
+            unset(${'search_tweets' . $i} -> {'search_metadata'});
+            ${'search_tweet' . $i} = ${'search_tweets' . $i} -> {'statuses'};
+            $max_id = end(${'search_tweets' .$i} -> {'statuses'})->{'id_str'};
             if(isset($max_id)){     //ページング処理
-                //echo "<br>------<br>next max_id :" . $max_id . "<br>-------<br>";
-                $params['max_id'] = $max_id;
+                if(PHP_INT_SIZE == 4)
+                    $params['max_id'] = $max_id;
+                elseif(PHP_INT_SIZE == 8)
+                    $params['max_id'] = $max_id - 1;
             }
             //echo "$i : " . sizeof(${'search_tweet' . $i}) . "<br>";
         }
@@ -117,12 +113,16 @@
         echo "</div>";
         
         foreach($search_tweet as $key => $value){
-            $sort[$key] = $value['favorite_count'];
+            $sort[$key] = $value -> {'favorite_count'};
         }
         array_multisort($sort,SORT_DESC,$search_tweet);     //ソート処理
+        sizeof($search_tweet);
         }
     }else{
-    $search_tweet = $connection -> get('search/tweets',$parms);
+        $search_tweet = $connection -> get('search/tweets',$params);
+        unset($search_tweet -> {'search_metadata'});
+        $temp = $search_tweet -> {'statuses'};
+        $search_tweet = $temp;
     }
 ?>
 
@@ -157,7 +157,10 @@
 </head>
 <header>
     <div id="title">
-        <h1><i class="fab fa-twitter"></i></h1>
+        <i class="fab fa-twitter"></i>
+    </div>
+    <div id="logout_button">
+        <a href="./logout.php"><i class="fas fa-sign-out-alt"></i>ログアウト</a>
     </div>
 </header>
 
@@ -184,44 +187,43 @@
        <label for="select2">認証済みユーザのみ（新しい順）</label>
     </form>
     <?php
-    $count = sizeof($search_tweet->{"statuses"});
-    for($Tweet_num = 0; $Tweet_num < $count; $Tweet_num++){
-        $TweetID = $search_tweet->{"statuses"}[$Tweet_num]->{"id"};
-        $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"created_at"};
+    for($Tweet_num = 0; $Tweet_num < 100; $Tweet_num++){
+        $TweetID = $search_tweet[$Tweet_num]->{"id"};
+        $Date = $search_tweet[$Tweet_num]->{"created_at"};
         $Tweet_time = strtotime($Date);
         $relative_time = $now_time - $Tweet_time;
-        $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"full_text"};
-        $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"screen_name"};
-        $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"name"};
-        $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"user"}->{"profile_image_url_https"};
-        $Retweet_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweet_count"};
-        $Favorite_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"favorite_count"};
+        $Text = $search_tweet[$Tweet_num]->{"full_text"};
+        $User_ID = $search_tweet[$Tweet_num]->{"user"}->{"screen_name"};
+        $User_Name = $search_tweet[$Tweet_num]->{"user"}->{"name"};
+        $Profile_image_URL = $search_tweet[$Tweet_num]->{"user"}->{"profile_image_url_https"};
+        $Retweet_Count = $search_tweet[$Tweet_num]->{"retweet_count"};
+        $Favorite_Count = $search_tweet[$Tweet_num]->{"favorite_count"};
         $Retweet_TRUE = FALSE;
         $media_URL = NULL;
 
         //RT処理
-        if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"})){
+        if(isset($search_tweet[$Tweet_num]->{"retweeted_status"})){
             $Retweet_TRUE = TRUE;
-            $Date = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"created_at"};
+            $Date = $search_tweet[$Tweet_num]->{"retweeted_status"}->{"created_at"};
             $RT_User = $User_Name;
-            $Text = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"full_text"};
-            $User_ID = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
-            $User_Name = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
-            $Profile_image_URL = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
-            $Retweet_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"retweet_count"};
-            $Favorite_Count = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"favorite_count"};    
-            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
-                $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = $search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
-            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"})){
-                foreach($search_tweet->{"statuses"}[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"} as $media){
+            $Text = $search_tweet[$Tweet_num]->{"retweeted_status"}->{"full_text"};
+            $User_ID = $search_tweet[$Tweet_num]->{"retweeted_status"}->{"user"}->{"screen_name"};
+            $User_Name = $search_tweet[$Tweet_num]->{"retweeted_status"}->{"user"}->{"name"};
+            $Profile_image_URL = $search_tweet[$Tweet_num]->{"retweeted_status"}->{"user"}->{"profile_image_url_https"};
+            $Retweet_Count = $search_tweet[$Tweet_num]->{"retweeted_status"}->{"retweet_count"};
+            $Favorite_Count = $search_tweet[$Tweet_num]->{"retweeted_status"}->{"favorite_count"};    
+            if(isset($search_tweet[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"}));
+                $search_tweet[$Tweet_num]->{"entities"}->{"hashtags"} = $search_tweet[$Tweet_num]->{"retweeted_status"}->{"entities"}->{"hashtags"};
+            if(isset($search_tweet[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"})){
+                foreach($search_tweet[$Tweet_num]->{"retweeted_status"}->{"extended_entities"}->{"media"} as $media){
                     $media_URL[] = $media->media_url_https;
                 }
             }
         }
 
             //ハッシュタグ処理
-            $search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"});
-            foreach($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
+            $search_tweet[$Tweet_num]->{"entities"}->{"hashtags"} = array_reverse($search_tweet[$Tweet_num]->{"entities"}->{"hashtags"});
+            foreach($search_tweet[$Tweet_num]->{"entities"}->{"hashtags"} as $hashtags){
                 if(isset($hashtags)){
                     $hashtag_text = $hashtags->text;
                     $hashtag_indices = $hashtags->indices;
@@ -231,13 +233,13 @@
                     $Text = $left_text . $after_text . $right_text;
                 }
             }
-            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"extended_entities"}->{"media"})){
-                foreach($search_tweet->{"statuses"}[$Tweet_num]->{"extended_entities"}->{"media"} as $media){
+            if(isset($search_tweet[$Tweet_num]->{"extended_entities"}->{"media"})){
+                foreach($search_tweet[$Tweet_num]->{"extended_entities"}->{"media"} as $media){
                     $media_URL[] = $media->media_url_https;
                 }
             }
-            if(isset($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"urls"})){
-                foreach($search_tweet->{"statuses"}[$Tweet_num]->{"entities"}->{"urls"} as $urls){
+            if(isset($search_tweet[$Tweet_num]->{"entities"}->{"urls"})){
+                foreach($search_tweet[$Tweet_num]->{"entities"}->{"urls"} as $urls){
                     $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" class= "iframe">'.$urls->display_url.'</a>',$Text);
                 }
             }
