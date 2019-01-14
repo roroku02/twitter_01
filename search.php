@@ -187,7 +187,12 @@
        <label for="select2">認証済みユーザのみ（新しい順）</label>
     </form>
     <?php
-    for($Tweet_num = 0; $Tweet_num < 100; $Tweet_num++){
+    if(sizeof($search_tweet) < 100){
+        $count_max = sizeof($search_tweet);
+    }else{
+        $count_max = 100;
+    }
+    for($Tweet_num = 0; $Tweet_num < $count_max; $Tweet_num++){
         $TweetID = $search_tweet[$Tweet_num]->{"id"};
         $Date = $search_tweet[$Tweet_num]->{"created_at"};
         $Tweet_time = strtotime($Date);
