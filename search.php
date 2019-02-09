@@ -304,7 +304,7 @@
 </body>
 <footer>
     <div id="title">
-        <h1><a href="main.php">タイムラインに戻る</a></h1>
+        <a href="main.php"><i class="fas fa-home"></i></a>
     </div>
 </footer>
 </html>

@@ -297,11 +297,19 @@ footer {
     z-index: 100;
 }
 
-footer #title {
-    text-align: center;
+footer #title {    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
-footer h1 {
-    padding: 0;
-    margin: 0;
+footer a {
+    text-decoration: none;
+    font-size: 30px;
+    color: rgb(100, 100, 100);
+}
+
+footer p {
+    font-size: 14px;
 }

@@ -290,7 +290,7 @@ $tweet = "";
 
 <footer>
     <div id="title">
-        <h1><a href="#search"><i class="fas fa-search"></i></a></h1>
+        <a href="#search"><i class="fas fa-search"></i></a>
     </div>
 </footer>
 
