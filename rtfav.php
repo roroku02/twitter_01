@@ -14,10 +14,11 @@
 
     $connection = new TwitterOAuth($ConsumerKey,$ConsumerSecret,$AccessToken['oauth_token'],$AccessToken['oauth_token_secret']);
 
-    
+    //RT
     if(isset($_POST['rt'])){
         $res = $connection->post('statuses/retweet',['id' => $_POST['rt']]);
     }
+    //Favo
     if(isset($_POST['fav'])){
         $res = $connection->post('favorites/create',['id' => $_POST['fav']]);
     }

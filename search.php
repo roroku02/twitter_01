@@ -130,7 +130,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title><?php echo $_SESSION['search_word']; ?>の検索結果</title>
+    <title><?php echo $_SESSION['search_word']; ?>の検索結果 | Twitterクライアント</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link href="http://fonts.googleapis.com/earlyaccess/sawarabigothic.css" rel="stylesheet" />
@@ -156,9 +156,11 @@
 </script>
 </head>
 <header>
+   <!-- ヘッダー/Twitterアイコン -->
     <div id="title">
         <i class="fab fa-twitter"></i>
     </div>
+    <!-- ヘッダー/ログアウトボタン -->
     <div id="logout_button">
         <a href="./logout.php"><i class="fas fa-sign-out-alt"></i>ログアウト</a>
     </div>

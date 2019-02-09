@@ -185,6 +185,7 @@ header #title {
 .Trend .toggle-box {
     display: none;
     border: 1px solid #000;
+    height: 50vh;
 }
 
 .option #search_button {

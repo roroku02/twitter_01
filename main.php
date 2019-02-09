@@ -19,7 +19,7 @@ $tweet = "";
 
 <head>
     <meta charset="utf-8" />
-    <title>jisaku Twitter</title>
+    <title>HOME | Twitterクライアント</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="stylesheet" type="text/css" href="css/lightbox.css" />
@@ -45,18 +45,22 @@ $tweet = "";
     });
 </script>
 <header>
+    <!-- ヘッダー/Twitterアイコン -->
     <div id="title">
         <i class="fab fa-twitter"></i>
     </div>
+    <!-- ヘッダー/ログアウトボタン -->
     <div id="logout_button">
         <a href="./logout.php"><i class="fas fa-sign-out-alt"></i>ログアウト</a>
     </div>
 </header>
 
 <body onload="init()">
+    <!-- ツイート作成ボタン（右下配置） -->
     <div class="create_Tweet">
         <i class="fas fa-edit"></i>
     </div>
+    <!-- ポップアップ型ツイートフォーム -->
     <div class="popup_TweetForm">
         <form action="tweet.php" method="post" enctype="multipart/form-data">
                 <textarea name="Tweet" id="Tweet" cols="50" rows="3" placeholder="今どうしてる？"></textarea>
@@ -90,6 +94,7 @@ $tweet = "";
                     echo '<br />';
                 };?>
             </ul>
+
             <!-- リスト選択 -->
             <section class="list_option">
             <h1>リストタイムライン</h1>
