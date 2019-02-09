@@ -241,11 +241,13 @@ $tweet = "";
                 <div id = "Tweet_header">
                     <div id = "User_info">
                         <li><img src =<?php echo $Profile_image_URL; ?>></li>
-                        <li id = "User_Name"><?php echo $User_Name ?></li>
-                        <li id = "User_ID">@<?php echo $User_ID ?></li>
-                        <?php if($Verified_User == TRUE){ ?>
-                            <li id = "Verified_User" style="padding-left:5px;"><img src="./images/verified_account.png"></img></li>
-                        <?php } ?>
+                        <div id="User_NameID">
+                            <li id = "User_Name"><?php echo $User_Name ?><?php if($Verified_User == TRUE){ ?>
+                                <img src="./images/verified_account.png" />
+                            <?php } ?></li>
+                            
+                            <li id = "User_ID">@<?php echo $User_ID ?></li>
+                        </div>
                     </div>
                         <!-- 相対時間表示 -->
                         <li><?php if($relative_time < 60){ 
