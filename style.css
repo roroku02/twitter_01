@@ -207,6 +207,7 @@ header #title {
     display: none;
     border: 1px solid #000;
     height: 50vh;
+    overflow: scroll;
 }
 
 .option #search_button {
