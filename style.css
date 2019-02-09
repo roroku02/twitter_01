@@ -152,23 +152,23 @@ header #title {
     padding-left: 5px;
 }
 
-.TimeLine #User_NameID {
+.TimeLine #User_NameID, .search #User_NameID {
     margin-left: 5px;
 }
 
 @media (max-width: 769px){
-    .TimeLine #User_NameID {
+    .TimeLine #User_NameID ,.search #User_NameID{
         width: 55vw;
     }
     
-    .TimeLine #User_Name {
+    .TimeLine #User_Name,.search #User_Name {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
 }
 
-.TimeLine #User_Name img{
+.TimeLine #User_Name img, .search #User_Name img{
     vertical-align: middle;
 }
 

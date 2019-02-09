@@ -250,18 +250,31 @@
                     $Text = str_replace($urls->url,'<a href="'.$urls->expanded_url.'" class= "iframe">'.$urls->display_url.'</a>',$Text);
                 }
             }
+
+            //承認済みユーザの取得
+            $Verified_User = FALSE;
+            if($search_tweet[$Tweet_num]->{"user"}->{"verified"} == "1"){
+                $Verified_User = TRUE;
+            }elseif($User_ID == "roroku02"){
+                $Verified_User = TRUE;
+            }
             
         ?>
             <ul>
             <?php if($Retweet_TRUE == TRUE){ ?>
-                <p class="retweet_sentence"><i class="fas fa-retweet fa-fw"></i><?php echo $RT_User; ?>がリツイート</p>
-                <?php } ?>
-            <div id = "Tweet_header">
-                <div id = "User_info">
-                    <li><img src =<?php echo $Profile_image_URL; ?>></li>
-                    <li id = "User_Name"><?php echo $User_Name ?></li>
-                    <li id = "User_ID">@<?php echo $User_ID ?></li>
-                </div>
+                <p class="retweet_sentence"><i class="fas fa-retweet fa-fw"></i><?php echo $RT_User; ?>がリツイート</p> <?php } ?>
+                <div id = "Tweet_header">
+                    <div id = "User_info">
+                        <li><img src =<?php echo $Profile_image_URL; ?>></li>
+                        <div id="User_NameID">
+                            <li id = "User_Name"><?php echo $User_Name ?><?php if($Verified_User == TRUE){ ?>
+                                <img src="./images/verified_account.png" />
+                            <?php } ?></li>
+                            
+                            <li id = "User_ID">@<?php echo $User_ID ?></li>
+                        </div>
+                    </div>
+                <!-- 相対時間表示 -->
                 <li><?php if($relative_time < 60){ 
                     echo $relative_time . "秒前";
                 }elseif($relative_time >= 60 && $relative_time < (60 * 60)){
